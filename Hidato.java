@@ -1,80 +1,180 @@
-import java.lang.String;
-
-import java.util.Scanner;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Hidato {
+    public int idH,iduser;
+    public static Taulell taulell;
+    public char dificultat;
 
 
-public class Taulell {
+    public Hidato(int idh, int idusr, Taulell topo) {
+        this.idH = idh;
+        this.iduser = idusr;
+        this.taulell = topo;
+    }
+    public void posar_forats(Taulell t) {
 
-    public static String Tcela;
-    public static String Tadjacecnia;
-    public static int files;
-    public static int columnes;
-    public static ArrayList <ArrayList<Integer> > matAdj; //id [i][j] = i*col + j
-    public static String[][] mContingut;
-
-    public static void llegirTaulell(){
-        Scanner teclado = new Scanner(System.in);
-        String s = teclado.nextLine();
-        String[] h= s.split(",");
-        Tcela = h[0];
-        Tadjacecnia = h[1];
-        files = Integer.parseInt(h[2]);
-        columnes = Integer.parseInt(h[3]);
-        matAdj = new ArrayList <ArrayList<Integer> >(columnes*files);
-        mContingut = new String[files][columnes];
-        String margen = h[4];
-        for (int i = 0; i < files; i++) {
-            for (int j = 0; j < columnes; j ++) {
-                mContingut[i][j] = "?";
-            }
-        }
-        for (int i = 0; i < margen.length(); i = i + 4) {
-            char f = margen.charAt(i);
-            int ff = Integer.parseInt(String.valueOf(f));
-            char c = margen.charAt(i + 2);
-            int cc = Integer.parseInt(String.valueOf(c));
-            mContingut[ff - 1][cc-1] = "#";
-        }
+    }
+    public void editar_idh(int idh) {
+        idH = idh;
+    }
+    public void editar_iduser(int idusr) {
+        iduser = idusr;
     }
 
-    public static void imprimirMatAdj(){
-        for (int i = 0; i < matAdj.size(); i++){
-            System.out.print("per i = " + i + "  ");
-            for (int j = 0; j < matAdj.get(i).size(); j++){
-                System.out.print(matAdj.get(i).get(j) + " ");
-            }
-            System.out.println();
-        }
-    }
 
-    public static void imprimirMContingut(){
-        System.out.print(Tcela + "," + Tadjacecnia + "," + files + "," + columnes);
-        System.out.println();
-        for (int i = 0; i < mContingut.length; i++){
-            for (int j = 0; j < mContingut[i].length; j++){
-                if (j < mContingut[i].length - 1) {
-                    System.out.print(mContingut[i][j] + ",");
-                }
-                else {
-                    System.out.print(mContingut[i][j]);
+
+    public static void generaMatAdj(){
+
+        if (taulell.Tcela.equals("Q")){
+            for (int i = 0; i < taulell.files; i++) {
+                for (int j = 0; j < taulell.columnes; j++) {
+                    if (taulell.mContingut[i][j] != "#") {
+                        taulell.matAdj.add(new ArrayList<Integer>());
+                        if (j - 1 >= 0 && taulell.mContingut[i][j - 1] != "#" && taulell.mContingut[i][j - 1] != "*")
+                            taulell.matAdj.get(i * taulell.columnes + j).add(i * taulell.columnes + j - 1);
+                        if (j + 1 < taulell.columnes && taulell.mContingut[i][j + 1] != "#" && taulell.mContingut[i][j + 1] != "*")
+                            taulell.matAdj.get(i * taulell.columnes + j).add(i * taulell.columnes + j + 1);
+                        if (i - 1 >= 0 && taulell.mContingut[i - 1][j] != "#" && taulell.mContingut[i - 1][j] != "*")
+                            taulell.matAdj.get(i * taulell.columnes + j).add((i - 1) * taulell.columnes + j);
+                        if (i + 1 < taulell.files && taulell.mContingut[i + 1][j] != "#" && taulell.mContingut[i + 1][j] != "*")
+                            taulell.matAdj.get(i * taulell.columnes + j).add((i + 1) * taulell.columnes + j);
+                    }
                 }
             }
-            System.out.println();
+            if (taulell.Tadjacecnia.equals("CA")) {
+                for (int i = 0; i < taulell.files; i++){
+                    for (int j = 0; j < taulell.columnes; j++){
+                        if (taulell.mContingut[i][j] != "#" && taulell.mContingut[i][j] != "*"){
+                            if (j - 1 >= 0 && i - 1 >= 0 && taulell.mContingut[i - 1][j - i] != "#" && taulell.mContingut[i - 1][j - 1] != "*")
+                                taulell.matAdj.get(i * taulell.columnes + j).add((i - 1) * taulell.columnes + j - 1);
+                            if (j + 1 < taulell.columnes && i - 1 >= 0 && taulell.mContingut[i - 1][j + 1] != "#" && taulell.mContingut[i - 1][j + 1] != "*")
+                                taulell.matAdj.get(i * taulell.columnes + j).add((i - 1) * taulell.columnes + j + 1);
+                            if (j + 1 < taulell.columnes && i + 1 < taulell.files && taulell.mContingut[i + 1][j + 1] != "#" && taulell.mContingut[i + 1][j + 1] != "*")
+                                taulell.matAdj.get(i * taulell.columnes + j).add((i + 1) * taulell.columnes + j + 1);
+                            if (j - 1 >= 0 && i + 1 < taulell.files && taulell.mContingut[i + 1][j - 1] != "#" && taulell.mContingut[i + 1][j - 1] != "*")
+                                taulell.matAdj.get(i * taulell.columnes + j).add((i + 1) * taulell.columnes + j - 1);
+                        }
+                    }
+                }
+            }
+
+        }
+        else if (taulell.Tcela.equals("H")) {
+            for (int i = 0; i < taulell.files; i++) {
+                for (int j = 0; j < taulell.columnes; j++) {
+                    taulell.matAdj.add(new ArrayList<Integer>());
+                    if (taulell.mContingut[i][j] != "#" && taulell.mContingut[i][j] != "*") {
+                        if (i % 2 == 1) {
+                            if (i - 1 >= 0 && taulell.mContingut[i - 1][j] != "#" && taulell.mContingut[i - 1][j] != "*")
+                                taulell.matAdj.get(i * taulell.columnes + j).add((i - 1) * taulell.columnes + j);
+                            if (i - 1 >= 0 && j + 1 < taulell.columnes && taulell.mContingut[i - 1][j + 1] != "#" && taulell.mContingut[i - 1][j + 1] != "*")
+                                taulell.matAdj.get(i * taulell.columnes + j).add((i - 1) * taulell.columnes + j + 1);
+                            if (j - 1 >= 0 && taulell.mContingut[i][j - 1] != "#" && taulell.mContingut[i][j - 1] != "*")
+                                taulell.matAdj.get(i * taulell.columnes + j).add(i * taulell.columnes + j - 1);
+                            if (j + 1 < taulell.columnes && taulell.mContingut[i][j + 1] != "#" && taulell.mContingut[i][j + 1] != "*")
+                                taulell.matAdj.get(i * taulell.columnes + j).add(i * taulell.columnes + j + 1);
+                            if (i + 1 < taulell.files && taulell.mContingut[i + 1][j] != "#" && taulell.mContingut[i + 1][j] != "*")
+                                taulell.matAdj.get(i * taulell.columnes + j).add((i + 1) * taulell.columnes + j);
+                            if (i + 1 < taulell.files && j + 1 < taulell.columnes && taulell.mContingut[i + 1][j + 1] != "#" && taulell.mContingut[i + 1][j + 1] != "*")
+                                taulell.matAdj.get(i * taulell.columnes + j).add((i + 1) * taulell.columnes + j + 1);
+                        }
+                        else {
+                            if (i - 1 >= 0 && taulell.mContingut[i - 1][j] != "#" && taulell.mContingut[i - 1][j] != "*")
+                                taulell.matAdj.get(i * taulell.columnes + j).add((i - 1) * taulell.columnes + j);
+                            if (i - 1 >= 0 && j - 1 >= 0 && taulell.mContingut[i - 1][j - 1] != "#" && taulell.mContingut[i + -1][j - 1] != "*")
+                                taulell.matAdj.get(i * taulell.columnes + j).add((i - 1) * taulell.columnes + j - 1);
+                            if (j - 1 >= 0 && taulell.mContingut[i + 1][j] != "#" && taulell.mContingut[i + 1][j] != "*")
+                                taulell.matAdj.get(i * taulell.columnes + j).add(i * taulell.columnes + j - 1);
+                            if (j + 1 < taulell.columnes && taulell.mContingut[i][j + 1] != "#" && taulell.mContingut[i][j + 1] != "*")
+                                taulell.matAdj.get(i * taulell.columnes + j).add(i * taulell.columnes + j + 1);
+                            if (i + 1 < taulell.files && taulell.mContingut[i + 1][j] != "#" && taulell.mContingut[i + 1][j] != "*")
+                                taulell.matAdj.get(i * taulell.columnes + j).add((i + 1) * taulell.columnes + j);
+                            if (i + 1 < taulell.files && j - 1 >= 0 && taulell.mContingut[i + 1][j - 1] != "#" && taulell.mContingut[i + 1][j - 1] != "*")
+                                taulell.matAdj.get(i * taulell.columnes + j).add((i + 1) * taulell.columnes + j - 1);
+                        }
+                    }
+                }
+            }
+        }
+        else if (taulell.Tcela.equals("T")){
+            for (int i = 0; i < taulell.files; i++) {
+                for (int j = 0; j < taulell.columnes; j++) {
+                    taulell.matAdj.add(new ArrayList<Integer>());
+                    if (taulell.mContingut[i][j] != "#" && taulell.mContingut[i][j] != "*") {
+                        if (j - 1 >= 0 && taulell.mContingut[i][j - 1] != "#" && taulell.mContingut[i][j - 1] != "*")
+                            taulell.matAdj.get(i * taulell.columnes + j).add(i * taulell.columnes + j - 1);
+                        if (j + 1 < taulell.columnes && taulell.mContingut[i][j + 1] != "#" && taulell.mContingut[i][j + 1] != "*")
+                            taulell.matAdj.get(i * taulell.columnes + j).add(i * taulell.columnes + j + 1);
+                        if ((i + j) % 2 == 0) {
+                            if (i + 1 < taulell.files && taulell.mContingut[i + 1][j] != "#" && taulell.mContingut[i + 1][j] != "*")
+                                taulell.matAdj.get(i * taulell.columnes + j).add((i + 1) * taulell.columnes + j);
+                        }
+                        else {
+                            if (i - 1 >= 0 && taulell.mContingut[i - 1][j] != "#" && taulell.mContingut[i - 1][j] != "*")
+                                taulell.matAdj.get(i * taulell.columnes + j).add((i - 1) * taulell.columnes + j);
+                        }
+                    }
+                }
+            }
+            if (taulell.Tadjacecnia.equals("CA")){
+                for (int i = 0; i < taulell.files; i++) {
+                    for (int j = 0; j < taulell.columnes; j++) {
+                        if (taulell.mContingut[i][j] != "#" && taulell.mContingut[i][j] != "*") {
+                            if ((i + j) % 2 == 0) {
+                                if (i - 1 >= 0 && j - 1 >= 0 && taulell.mContingut[i - 1][j - 1] != "#" && taulell.mContingut[i - 1][j - 1] != "*")
+                                    taulell.matAdj.get(i * taulell.columnes + j).add((i - 1) * taulell.columnes + j - 1);
+                                if (i - 1 >= 0 && taulell.mContingut[i - 1][j] != "#" && taulell.mContingut[i - 1][j] != "*")
+                                    taulell.matAdj.get(i * taulell.columnes + j).add((i - 1) * taulell.columnes + j);
+                                if (i - 1 >= 0 && j + 1 < taulell.columnes && taulell.mContingut[i - 1][j + 1] != "#" && taulell.mContingut[i - 1][j + 1] != "*")
+                                    taulell.matAdj.get(i * taulell.columnes + j).add((i - 1) * taulell.columnes + j + 1);
+                                if (j - 2 >= 0 && taulell.mContingut[i][j - 2] != "#" && taulell.mContingut[i][j - 2] != "*")
+                                    taulell.matAdj.get(i * taulell.columnes + j).add(i * taulell.columnes + j - 2);
+                                if (j + 2 < taulell.columnes && taulell.mContingut[i + 2][j] != "#" && taulell.mContingut[i + 2][j] != "*")
+                                    taulell.matAdj.get(i * taulell.columnes + j).add(i * taulell.columnes + j + 2);
+                                if (i + 1 < taulell.files && j - 2 >= 0 && taulell.mContingut[i + 1][j - 2] != "#" && taulell.mContingut[i + 1][j - 2] != "*")
+                                    taulell.matAdj.get(i * taulell.columnes + j).add((i + 1) * taulell.columnes + j - 2);
+                                if (i + 1 < taulell.files && j - 1 >= 0 && taulell.mContingut[i + 1][j - 1] != "#" && taulell.mContingut[i + 1][j - 1] != "*")
+                                    taulell.matAdj.get(i * taulell.columnes + j).add((i + 1) * taulell.columnes + j - 1);
+                                if (i + 1 < taulell.files && j + 1 < taulell.columnes && taulell.mContingut[i + 1][j + 1] != "#" && taulell.mContingut[i + 1][j + 1] != "*")
+                                    taulell.matAdj.get(i * taulell.columnes + j).add((i + 1) * taulell.columnes + j + 1);
+                                if (i + 1 < taulell.files && j + 2 < taulell.columnes && taulell.mContingut[i + 1][j + 2] != "#" && taulell.mContingut[i + 1][j + 2] != "*")
+                                    taulell.matAdj.get(i * taulell.columnes + j).add((i + 1) * taulell.columnes + j + 2);
+                            }
+                            else {
+                                if (i - 1 >= 0 && j - 2 >= 0 && taulell.mContingut[i - 1][j - 2] != "#" && taulell.mContingut[i - 1][j - 2] != "*")
+                                    taulell.matAdj.get(i * taulell.columnes + j).add((i - 1) * taulell.columnes + j - 2);
+                                if (i - 1 >= 0 && j - 1 >= 0 && taulell.mContingut[i - 1][j - 1] != "#" && taulell.mContingut[i - 1][j - 1] != "*")
+                                    taulell.matAdj.get(i * taulell.columnes + j).add((i - 1) * taulell.columnes + j - 1);
+                                if (i - 1 >= 0 && j + 1 < taulell.columnes && taulell.mContingut[i - 1][j + 1] != "#" && taulell.mContingut[i - 1][j + 1] != "*")
+                                    taulell.matAdj.get(i * taulell.columnes + j).add((i - 1) * taulell.columnes + j + 1);
+                                if (i - 1 >= 0 && j + 2 < taulell.columnes && taulell.mContingut[i - 1][j + 2] != "#" && taulell.mContingut[i - 1][j + 2] != "*")
+                                    taulell.matAdj.get(i * taulell.columnes + j).add((i - 1) * taulell.columnes + j + 2);
+                                if (j - 2 >= 0 && taulell.mContingut[i][j - 2] != "#" && taulell.mContingut[i][j - 2] != "*")
+                                    taulell.matAdj.get(i * taulell.columnes + j).add(i * taulell.columnes + j - 2);
+                                if (j + 2 < taulell.columnes && taulell.mContingut[i][j + 2] != "#" && taulell.mContingut[i][j + 2] != "*")
+                                    taulell.matAdj.get(i * taulell.columnes + j).add(i * taulell.columnes + j + 2);
+                                if (i + 1 < taulell.files && j - 1 >= 0 && taulell.mContingut[i + 1][j - 1] != "#" && taulell.mContingut[i + 1][j - 1] != "*")
+                                    taulell.matAdj.get(i * taulell.columnes + j).add((i + 1) * taulell.columnes + j - 1);
+                                if (i + 1 < taulell.files && taulell.mContingut[i + 1][j] != "#" && taulell.mContingut[i + 1][j] != "*")
+                                    taulell.matAdj.get(i * taulell.columnes + j).add((i + 1) * taulell.columnes + j);
+                                if (i + 1 < taulell.files && j + 1 < taulell.columnes && taulell.mContingut[i + 1][j + 1] != "#" && taulell.mContingut[i + 1][j + 1] != "*")
+                                    taulell.matAdj.get(i * taulell.columnes + j).add((i + 1) * taulell.columnes + j + 1);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
-    public int getFiles() {
-        return matAdj.size();
+    public static void main(String[] arg){
+        taulell=new Taulell();
+        taulell.llegirTaulell();
+        generaMatAdj();
+        taulell.imprimirMatAdj();
+        taulell.imprimirMContingut();
+        //System.out.println(taulell.getFiles());
     }
-
-    /*public static void main(String[] arg){
-
-        llegirTaulell();
-        //generaMatAdj();
-        imprimirMatAdj();
-    }*/
-
 
 }
