@@ -1,3 +1,5 @@
+import java.lang.String;
+
 import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
@@ -5,123 +7,35 @@ import java.util.ArrayList;
 
 public class Taulell {
 
-    private static String Tcela;
-    private static String Tadjacecnia;
-    private static int files;
-    private static int columnes;
-    private static ArrayList <ArrayList<Integer> > matAdj; //id [i][j] = i*col + j
-    private static int[][] mContingut;
+    public static String Tcela;
+    public static String Tadjacecnia;
+    public static int files;
+    public static int columnes;
+    public static ArrayList <ArrayList<Integer> > matAdj; //id [i][j] = i*col + j
+    public static String[][] mContingut;
 
     public static void llegirTaulell(){
         Scanner teclado = new Scanner(System.in);
         String s = teclado.nextLine();
-        String h[]= s.split(",");
+        String[] h= s.split(",");
         Tcela = h[0];
         Tadjacecnia = h[1];
         files = Integer.parseInt(h[2]);
         columnes = Integer.parseInt(h[3]);
-        matAdj = new ArrayList <ArrayList<Integer> >(columnes*files) ;
-    }
-
-    public static void generaMatAdj(){
-
-        if (Tcela.equals("Q")){
-                for (int i = 0; i < files; i++) {
-                    for (int j = 0; j < columnes; j++) {
-                        matAdj.add(new ArrayList<Integer>());
-                        if (j - 1 >= 0) matAdj.get(i * columnes + j).add(i * columnes + j - 1);
-                        if (j + 1 < columnes) matAdj.get(i * columnes + j).add(i * columnes + j + 1);
-                        if (i - 1 >= 0) matAdj.get(i * columnes + j).add((i - 1) * columnes + j);
-                        if (i + 1 < files) matAdj.get(i * columnes + j).add((i + 1) * columnes + j);
-                    }
-                }
-            if (Tadjacecnia.equals("CA")) {
-                for (int i = 0; i < files; i++){
-                    for (int j = 0; j < columnes; j++){
-                        if (j-1 >=0 && i-1 >=0) matAdj.get(i*columnes + j).add((i-1) * columnes + j - 1);
-                        if (j+1 < columnes && i-1 >=0) matAdj.get(i*columnes + j).add((i-1) * columnes + j + 1);
-                        if (j+1 < columnes && i+1 < files) matAdj.get(i*columnes + j).add((i+1) * columnes + j + 1);
-                        if (j-1 >=0 && i+1 < files) matAdj.get(i*columnes + j).add((i+1) * columnes + j - 1);
-                    }
-                }
+        matAdj = new ArrayList <ArrayList<Integer> >(columnes*files);
+        mContingut = new String[files][columnes];
+        String margen = h[4];
+        for (int i = 0; i < files; i++) {
+            for (int j = 0; j < columnes; j ++) {
+                mContingut[i][j] = "?";
             }
         }
-        else if (Tcela.equals("H")) {
-            for (int i = 0; i < files; i++) {
-                for (int j = 0; j < columnes; j++) {
-                    matAdj.add(new ArrayList<Integer>());
-                    if (i%2==1) {
-                        if (i - 1 >= 0) matAdj.get(i * columnes + j).add((i - 1) * columnes + j);
-                        if (i - 1 >= 0 && j + 1 < columnes)
-                            matAdj.get(i * columnes + j).add((i - 1) * columnes + j + 1);
-                        if (j - 1 >= 0) matAdj.get(i * columnes + j).add(i * columnes + j - 1);
-                        if (j + 1 < columnes) matAdj.get(i * columnes + j).add(i * columnes + j + 1);
-                        if (i + 1 < files) matAdj.get(i * columnes + j).add((i + 1) * columnes + j);
-                        if (i + 1 < files && j + 1 < columnes)
-                            matAdj.get(i * columnes + j).add((i + 1) * columnes + j + 1);
-                    }
-                    else {
-                        if (i - 1 >= 0) matAdj.get(i * columnes + j).add((i - 1) * columnes + j);
-                        if (i - 1 >= 0 && j - 1 >= 0)
-                            matAdj.get(i * columnes + j).add((i - 1) * columnes + j - 1);
-                        if (j - 1 >= 0) matAdj.get(i * columnes + j).add(i * columnes + j - 1);
-                        if (j + 1 < columnes) matAdj.get(i * columnes + j).add(i * columnes + j + 1);
-                        if (i + 1 < files) matAdj.get(i * columnes + j).add((i + 1) * columnes + j);
-                        if (i + 1 < files && j - 1 >= 0)
-                            matAdj.get(i * columnes + j).add((i + 1) * columnes + j - 1);
-                    }
-                }
-            }
-        }
-        else if (Tcela.equals("T")){
-            for (int i = 0; i < files; i++) {
-                for (int j = 0; j < columnes; j++) {
-                    matAdj.add(new ArrayList<Integer>());
-                    if (j - 1 >= 0) matAdj.get(i * columnes + j).add(i * columnes + j - 1);
-                    if (j + 1 < columnes) matAdj.get(i * columnes + j).add(i * columnes + j + 1);
-                    if ((i + j) % 2 == 0) {
-                        if (i + 1 < files) matAdj.get(i * columnes + j).add((i + 1) * columnes + j);
-                    } else {
-                        if (i - 1 >= 0) matAdj.get(i * columnes + j).add((i - 1) * columnes + j);
-                    }
-                }
-            }
-            if (Tadjacecnia.equals("CA")){
-                for (int i = 0; i < files; i++) {
-                    for (int j = 0; j < columnes; j++) {
-                        if ((i + j) % 2 == 0) {
-                            if (i - 1 >= 0 && j - 1 >= 0) matAdj.get(i * columnes + j).add((i - 1) * columnes + j - 1);
-                            if (i - 1 >= 0) matAdj.get(i * columnes + j).add((i - 1) * columnes + j);
-                            if (i - 1 >= 0 && j + 1 < columnes)
-                                matAdj.get(i * columnes + j).add((i - 1) * columnes + j + 1);
-                            if (j - 2 >= 0) matAdj.get(i * columnes + j).add(i * columnes + j - 2);
-                            if (j + 2 < columnes) matAdj.get(i * columnes + j).add(i * columnes + j + 2);
-                            if (i + 1 < files && j - 2 >= 0)
-                                matAdj.get(i * columnes + j).add((i + 1) * columnes + j - 2);
-                            if (i + 1 < files && j - 1 >= 0)
-                                matAdj.get(i * columnes + j).add((i + 1) * columnes + j - 1);
-                            if (i + 1 < files && j + 1 < columnes)
-                                matAdj.get(i * columnes + j).add((i + 1) * columnes + j + 1);
-                            if (i + 1 < files && j + 2 < columnes)
-                                matAdj.get(i * columnes + j).add((i + 1) * columnes + j + 2);
-                        } else {
-                            if (i - 1 >= 0 && j - 2 >= 0) matAdj.get(i * columnes + j).add((i - 1) * columnes + j - 2);
-                            if (i - 1 >= 0 && j - 1 >= 0) matAdj.get(i * columnes + j).add((i - 1) * columnes + j - 1);
-                            if (i - 1 >= 0 && j + 1 < columnes)
-                                matAdj.get(i * columnes + j).add((i - 1) * columnes + j + 1);
-                            if (i - 1 >= 0 && j + 2 < columnes)
-                                matAdj.get(i * columnes + j).add((i - 1) * columnes + j + 2);
-                            if (j - 2 >= 0) matAdj.get(i * columnes + j).add(i * columnes + j - 2);
-                            if (j + 2 < columnes) matAdj.get(i * columnes + j).add(i * columnes + j + 2);
-                            if (i + 1 < files && j - 1 >= 0)
-                                matAdj.get(i * columnes + j).add((i + 1) * columnes + j - 1);
-                            if (i + 1 < files) matAdj.get(i * columnes + j).add((i + 1) * columnes + j);
-                            if (i + 1 < files && j + 1 < columnes)
-                                matAdj.get(i * columnes + j).add((i + 1) * columnes + j + 1);
-                        }
-                    }
-                }
-            }
+        for (int i = 0; i < margen.length(); i = i + 4) {
+            char f = margen.charAt(i);
+            int ff = Integer.parseInt(String.valueOf(f));
+            char c = margen.charAt(i + 2);
+            int cc = Integer.parseInt(String.valueOf(c));
+            mContingut[ff - 1][cc-1] = "#";
         }
     }
 
@@ -135,12 +49,32 @@ public class Taulell {
         }
     }
 
-    public static void main(String[] arg){
+    public static void imprimirMContingut(){
+        System.out.print(Tcela + "," + Tadjacecnia + "," + files + "," + columnes);
+        System.out.println();
+        for (int i = 0; i < mContingut.length; i++){
+            for (int j = 0; j < mContingut[i].length; j++){
+                if (j < mContingut[i].length - 1) {
+                    System.out.print(mContingut[i][j] + ",");
+                }
+                else {
+                    System.out.print(mContingut[i][j]);
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    public int getFiles() {
+        return matAdj.size();
+    }
+
+    /*public static void main(String[] arg){
 
         llegirTaulell();
-        generaMatAdj();
+        //generaMatAdj();
         imprimirMatAdj();
-    }
+    }*/
 
 
 }
