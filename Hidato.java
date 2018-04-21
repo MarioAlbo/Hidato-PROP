@@ -29,7 +29,7 @@ public class Hidato {
         if (taulell.Tcela.equals("Q")){
             for (int i = 0; i < taulell.files; i++) {
                 for (int j = 0; j < taulell.columnes; j++) {
-                    if (taulell.mContingut[i][j] != "#") {
+                    if (taulell.mContingut[i][j] != "#" && taulell.mContingut[i][j] != "*") {
                         taulell.matAdj.add(new ArrayList<Integer>());
                         if (j - 1 >= 0 && taulell.mContingut[i][j - 1] != "#" && taulell.mContingut[i][j - 1] != "*")
                             taulell.matAdj.get(i * taulell.columnes + j).add(i * taulell.columnes + j - 1);
