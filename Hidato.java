@@ -9,12 +9,13 @@ public class Hidato {
     public static Taulell taulell;
     public char dificultat;
     public static ArrayList <ArrayList<Integer> > matAdj; //id [i][j] = i*col + j
+    public static String[][] mContingut;
 
 
     public Hidato(int idh, int idusr, Taulell topo) {
         this.idH = idh;
         this.iduser = idusr;
-        this.taulell = topo;
+        this.mContingut = topo.mContingut;
         this.matAdj = new ArrayList <ArrayList<Integer> >(topo.columnes*topo.files);
         if (topo.columnes*topo.files < 36) { //aprox 6 * 6
             this.dificultat = 'F'; //FACIL
@@ -26,16 +27,6 @@ public class Hidato {
             this.dificultat = 'D';  //DIFICIL
         }
     }
-    public void posar_forats(Taulell t) {
-
-    }
-    public void editar_idh(int idh) {
-        idH = idh;
-    }
-    public void editar_iduser(int idusr) {
-        iduser = idusr;
-    }
-
 
 
     public static void generaMatAdj(){
@@ -184,16 +175,41 @@ public class Hidato {
     }
 
     public static void posarForats() {
+        System.out.println("posar forats(*): coorX coordY ");
+        System.out.println("per acabar: exit");
         Scanner teclado = new Scanner(System.in);
         String s = teclado.nextLine();
-        String[] h= s.split(",");
-        for (int i = 0; i < h.length; i++){
-            String tmp = h[i];
-            char f = tmp.charAt(0);
-            int ff =  Integer.parseInt(String.valueOf(f)) - 1;
-            char c = tmp.charAt(2);
-            int cc =  Integer.parseInt(String.valueOf(c)) - 1;
-            taulell.mContingut[ff][cc] = "*";
+        while (!s.equals("exit")) {
+            String[] h = s.split(" ");
+            int coordX =  Integer.parseInt(h[0]);
+            int coordY =  Integer.parseInt(h[1]);
+            if (mContingut[coordX][coordY] != "#"){
+                mContingut[coordX][coordY] = "*";
+            }
+            else {
+                System.out.println("No pots posar un * en un forat!");
+            }
+            s = teclado.nextLine();
+        }
+    }
+
+    public static void posarNumeros() {
+        System.out.println("posar numeros: coorX coordY num ");
+        System.out.println("per acabar: exit");
+        Scanner teclado = new Scanner(System.in);
+        String s = teclado.nextLine();
+        while (!s.equals("exit")) {
+            String[] h = s.split(" ");
+            int coordX =  Integer.parseInt(h[0]);
+            int coordY =  Integer.parseInt(h[1]);
+            String num = h[2];
+            if (mContingut[coordX][coordY] != "#"){
+                mContingut[coordX][coordY] = num;
+            }
+            else {
+                System.out.println("No pots posar un numero en un forat!");
+            }
+            s = teclado.nextLine();
         }
     }
 
@@ -211,12 +227,12 @@ public class Hidato {
         taulell=new Taulell();
         taulell.llegirTaulell();
         Hidato hidato = new Hidato(1,1, taulell);
-        //posarForats();
+        hidato.posarForats();
+        hidato.posarNumeros();
         hidato.generaMatAdj();
         hidato.imprimirMatAdj();
         taulell.imprimirMContingut();
 
-       // System.out.println(p.size());
     }
 
 }
