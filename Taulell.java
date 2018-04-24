@@ -12,27 +12,45 @@ public class Taulell {
     public static int columnes;
     public static String[][] mContingut;
 
-    public static void llegirTaulell(){
+    public static void llegirTaulell() {
         Scanner teclado = new Scanner(System.in);
         String s = teclado.nextLine();
-        String[] h= s.split(",");
+        String[] h = s.split(",");
         Tcela = h[0];
         Tadjacecnia = h[1];
         files = Integer.parseInt(h[2]);
         columnes = Integer.parseInt(h[3]);
         mContingut = new String[files][columnes];
-        String margen = h[4];
         for (int i = 0; i < files; i++) {
-            for (int j = 0; j < columnes; j ++) {
+            for (int j = 0; j < columnes; j++) {
                 mContingut[i][j] = "?";
             }
         }
+    }
+
+    public static void posarForats() {
+        System.out.println("posa Forats: 1.1/2.2");
+        Scanner teclado = new Scanner(System.in);
+        String margen = teclado.nextLine();
         for (int i = 0; i < margen.length(); i = i + 4) {
             char f = margen.charAt(i);
             int ff = Integer.parseInt(String.valueOf(f));
             char c = margen.charAt(i + 2);
             int cc = Integer.parseInt(String.valueOf(c));
             mContingut[ff - 1][cc-1] = "#";
+        }
+    }
+
+    public static void treuForats() {
+        System.out.println("treu Forats: 1.1/2.2");
+        Scanner teclado = new Scanner(System.in);
+        String margen = teclado.nextLine();
+        for (int i = 0; i < margen.length(); i = i + 4) {
+            char f = margen.charAt(i);
+            int ff = Integer.parseInt(String.valueOf(f));
+            char c = margen.charAt(i + 2);
+            int cc = Integer.parseInt(String.valueOf(c));
+            mContingut[ff - 1][cc-1] = "?";
         }
     }
 
@@ -57,8 +75,8 @@ public class Taulell {
     public static void main(String[] arg){
 
         llegirTaulell();
-        //generaMatAdj();
-        //imprimirMatAdj();
+        posarForats();
+        treuForats();
         imprimirMContingut();
     }
 
