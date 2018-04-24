@@ -1,7 +1,6 @@
 import java.lang.String;
-
 import java.util.Scanner;
-import java.util.List;
+//import java.util.List;
 import java.util.ArrayList;
 
 
@@ -11,7 +10,6 @@ public class Taulell {
     public static String Tadjacecnia;
     public static int files;
     public static int columnes;
-    public static ArrayList <ArrayList<Integer> > matAdj; //id [i][j] = i*col + j
     public static String[][] mContingut;
 
     public static void llegirTaulell(){
@@ -22,7 +20,6 @@ public class Taulell {
         Tadjacecnia = h[1];
         files = Integer.parseInt(h[2]);
         columnes = Integer.parseInt(h[3]);
-        matAdj = new ArrayList <ArrayList<Integer> >(columnes*files);
         mContingut = new String[files][columnes];
         String margen = h[4];
         for (int i = 0; i < files; i++) {
@@ -39,15 +36,6 @@ public class Taulell {
         }
     }
 
-    public static void imprimirMatAdj(){
-        for (int i = 0; i < matAdj.size(); i++){
-            System.out.print("per i = " + i + "  ");
-            for (int j = 0; j < matAdj.get(i).size(); j++){
-                System.out.print(matAdj.get(i).get(j) + " ");
-            }
-            System.out.println();
-        }
-    }
 
     public static void imprimirMContingut(){
         System.out.print(Tcela + "," + Tadjacecnia + "," + files + "," + columnes);
@@ -65,16 +53,14 @@ public class Taulell {
         }
     }
 
-    public int getFiles() {
-        return matAdj.size();
-    }
 
-    /*public static void main(String[] arg){
+    public static void main(String[] arg){
 
         llegirTaulell();
         //generaMatAdj();
-        imprimirMatAdj();
-    }*/
+        //imprimirMatAdj();
+        imprimirMContingut();
+    }
 
 
 }
