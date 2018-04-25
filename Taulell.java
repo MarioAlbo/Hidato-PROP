@@ -12,6 +12,24 @@ public class Taulell {
     public static int columnes;
     public static String[][] mContingut;
 
+    public Taulell(){
+        llegirTaulell();
+    }
+
+    public Taulell(String s){
+        String[] h = s.split(",");
+        Tcela = h[0];
+        Tadjacecnia = h[1];
+        files = Integer.parseInt(h[2]);
+        columnes = Integer.parseInt(h[3]);
+        mContingut = new String[files][columnes];
+        for (int i = 0; i < files; i++) {
+            for (int j = 0; j < columnes; j++) {
+                mContingut[i][j] = "?";
+            }
+        }
+    }
+
     public static void llegirTaulell() {
         System.out.println("llegint taulell");
         Scanner teclado = new Scanner(System.in);
