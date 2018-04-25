@@ -1,5 +1,4 @@
-[17:58, 24/4/2018] Aleix Dalmau: import java.util.ArrayList;
-
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.lang.String;
 import java.util.List;
