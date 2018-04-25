@@ -1,3 +1,10 @@
+package Hidato;
+
+import static Hidato.Taulell.Tadjacecnia;
+import static Hidato.Taulell.Tcela;
+import static Hidato.Taulell.columnes;
+import static Hidato.Taulell.files;
+import static Hidato.Taulell.mContingut;
 import java.util.ArrayList;
 
 import java.util.Scanner;
@@ -5,16 +12,17 @@ import java.lang.String;
 
 
 public class Hidato {
-    public int idH,iduser;
+    public int idH;
+    public String nickname;
     public static Taulell taulell;
     public char dificultat;
     public static ArrayList <ArrayList<Integer> > matAdj; //id [i][j] = i*col + j
     public static String[][] mContingut;
 
 
-    public Hidato(int idh, int idusr, Taulell topo) {
+    public Hidato(int idh, String nick, Taulell topo) { //Crear a partir de Taulell
         this.idH = idh;
-        this.iduser = idusr;
+        this.nickname = nick;
         this.mContingut = topo.mContingut;
         this.matAdj = new ArrayList <ArrayList<Integer> >(topo.columnes*topo.files);
         if (topo.columnes*topo.files < 36) { //aprox 6 * 6
@@ -29,7 +37,7 @@ public class Hidato {
     }
 
 
-    public static void generaMatAdj(){
+    public void generaMatAdj(){
 
         if (taulell.Tcela.equals("Q")){
             for (int i = 0; i < taulell.files; i++) {
@@ -174,7 +182,7 @@ public class Hidato {
         }
     }
 
-    public static void posarForats() {
+    public void posarForats() {
         System.out.println("posar forats(*): coorX coordY ");
         System.out.println("per acabar: exit");
         Scanner teclado = new Scanner(System.in);
@@ -193,7 +201,7 @@ public class Hidato {
         }
     }
 
-    public static void posarNumeros() {
+    public void posarNumeros() {
         System.out.println("posar numeros: coorX coordY num ");
         System.out.println("per acabar: exit");
         Scanner teclado = new Scanner(System.in);
@@ -213,7 +221,7 @@ public class Hidato {
         }
     }
 
-    public static void imprimirMatAdj(){
+    public void imprimirMatAdj(){
         for (int i = 0; i < matAdj.size(); i++){
             System.out.print("per i = " + i + "  ");
             for (int j = 0; j < matAdj.get(i).size(); j++){
@@ -222,17 +230,18 @@ public class Hidato {
             System.out.println();
         }
     }
-
-    public static void main(String[] arg){
-        taulell=new Taulell();
-        taulell.llegirTaulell();
-        Hidato hidato = new Hidato(1,1, taulell);
-        hidato.posarForats();
-        hidato.posarNumeros();
-        hidato.generaMatAdj();
-        hidato.imprimirMatAdj();
-        taulell.imprimirMContingut();
-
+    
+    public void imprimirMContingut(){
+        for (int i = 0; i < this.mContingut.length; i++){
+            for (int j = 0; j < this.mContingut[i].length; j++){
+                if (j < this.mContingut[i].length - 1) {
+                    System.out.print(this.mContingut[i][j] + ",");
+                }
+                else {
+                    System.out.print(this.mContingut[i][j]);
+                }
+            }
+            System.out.println();
+        }
     }
-
 }

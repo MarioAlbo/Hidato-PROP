@@ -1,8 +1,11 @@
-import java.lang.String;
-import java.util.Scanner;
-//import java.util.List;
-import java.util.ArrayList;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Hidato;
 
+import java.util.Scanner;
 
 public class Taulell {
 
@@ -12,7 +15,7 @@ public class Taulell {
     public static int columnes;
     public static String[][] mContingut;
 
-    public static void llegirTaulell() {
+    public void llegirTaulell() {
         System.out.println("llegint taulell");
         Scanner teclado = new Scanner(System.in);
         String s = teclado.nextLine();
@@ -29,7 +32,7 @@ public class Taulell {
         }
     }
 
-    public static void posarForats() {
+    public void posarForats() {
         System.out.println("posar forats(#): coorX coordY");
         System.out.println("per acabar: exit");
         Scanner teclado = new Scanner(System.in);
@@ -43,7 +46,7 @@ public class Taulell {
         }
     }
 
-    public static void treuForats() {
+    public void treuForats() {
         System.out.println("treure forats: coorX coordY");
         System.out.println("per acabar: exit");
         Scanner teclado = new Scanner(System.in);
@@ -58,7 +61,7 @@ public class Taulell {
     }
 
 
-    public static void imprimirMContingut(){
+    public void imprimirMContingut(){
         System.out.print(Tcela + "," + Tadjacecnia + "," + files + "," + columnes);
         System.out.println();
         for (int i = 0; i < mContingut.length; i++){
@@ -73,15 +76,4 @@ public class Taulell {
             System.out.println();
         }
     }
-
-
-    public static void main(String[] arg){
-
-        llegirTaulell();
-        posarForats();
-        treuForats();
-        imprimirMContingut();
-    }
-
-
 }
