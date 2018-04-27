@@ -3,9 +3,9 @@ public class Partida {
     private final String idplayer;
     private final Tiempo temps;
     private static boolean acabat;
-    private Hidato hidato;
-    private String [][] mCoriginal;
-
+    private final Hidato hidato;
+    private final String [][] mCoriginal;
+    
 
     /////////////////////////////////////////////////////////////////
     /* * * * * * * * * *  G E T T E R S  * * * * * * * * * * * * * */
@@ -26,7 +26,7 @@ public class Partida {
     public static boolean getAcabat() {
         return acabat;
     }
-
+    
     public void acabar(){
         acabat=true;
     }
@@ -42,7 +42,7 @@ public class Partida {
         mCoriginal = new String [sx][sy];
         clonarMatriu(hi.mContingut);
     }
-
+    
     public void clonarMatriu(String[][] a){
         for(int i = 0; i < a.length ; i++)
             for(int j = 0; j < a[0].length; j++){
@@ -54,21 +54,22 @@ public class Partida {
     public void posarNum(int x, int y, String n){
         String c = hidato.mContingut[x][y];
         String c2 = mCoriginal[x][y];
-        System.out.println(c+" "+c2);
-        if(c.equals("#") || isNumeric(c2) || c.equals("*")) System.out.println("No es pot colÂ·locar perque hi ha:("+c+")");
+        if(c.equals("#") || isNumeric(c2) || c.equals("*")) System.out.println(
+                "No es pot col·locar perque hi ha:("+c+")");
         else {hidato.mContingut[x][y] = n;hidato.imprimirMContingut();}
     }
 
     public void borrarNum(int x, int y){
         String c = mCoriginal[x][y];
-        if(c.equals("#") || isNumeric(c) || c.equals("*")) System.out.println("No es pot borrar perque hi ha:("+c+")");
+        if(c.equals("#") || isNumeric(c) || c.equals("*")) System.out.println(
+                "No es pot borrar perque hi ha:("+c+")");
         else {hidato.mContingut[x][y] = "?";hidato.imprimirMContingut();}
     }
 
     public void ajuda(){
-
+        
     }
-
+    
     private boolean isNumeric(String cadena) {
 
         boolean resultado;
@@ -84,4 +85,3 @@ public class Partida {
     }
 
 }
-
