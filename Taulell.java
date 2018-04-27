@@ -1,8 +1,4 @@
-import java.lang.String;
 import java.util.Scanner;
-//import java.util.List;
-import java.util.ArrayList;
-
 
 public class Taulell {
 
@@ -11,10 +7,6 @@ public class Taulell {
     public static int files;
     public static int columnes;
     public static String[][] mContingut;
-
-    public Taulell(){
-        llegirTaulell();
-    }
 
     public Taulell(String s){
         String[] h = s.split(",");
@@ -30,7 +22,7 @@ public class Taulell {
         }
     }
 
-    public static void llegirTaulell() {
+    public Taulell() {
         System.out.println("llegint taulell");
         Scanner teclado = new Scanner(System.in);
         String s = teclado.nextLine();
@@ -47,7 +39,7 @@ public class Taulell {
         }
     }
 
-    public static void posarForats() {
+    public void posarForats() {
         System.out.println("posar forats(#): coorX coordY");
         System.out.println("per acabar: exit");
         Scanner teclado = new Scanner(System.in);
@@ -61,7 +53,7 @@ public class Taulell {
         }
     }
 
-    public static void treuForats() {
+    public void treuForats() {
         System.out.println("treure forats: coorX coordY");
         System.out.println("per acabar: exit");
         Scanner teclado = new Scanner(System.in);
@@ -76,7 +68,7 @@ public class Taulell {
     }
 
 
-    public static void imprimirMContingut(){
+    public void imprimirMContingut(){
         System.out.print(Tcela + "," + Tadjacecnia + "," + files + "," + columnes);
         System.out.println();
         for (int i = 0; i < mContingut.length; i++){
@@ -91,15 +83,4 @@ public class Taulell {
             System.out.println();
         }
     }
-
-
-    public static void main(String[] arg){
-
-        llegirTaulell();
-        posarForats();
-        treuForats();
-        imprimirMContingut();
-    }
-
-
 }
