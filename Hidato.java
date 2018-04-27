@@ -1,6 +1,6 @@
 import java.util.ArrayList;
+
 import java.util.Scanner;
-import java.lang.String;
 import java.util.List;
 import java.util.Collections;
 
@@ -17,6 +17,8 @@ public class Hidato {
         this.nickname = nick;
         this.mContingut = t.mContingut;
         this.taulell = t;
+        posarForats(); //<----FALTAVA AIXO
+        posarNumeros();//<----FALTAVA AIXO
         generaMatAdj();
     }
 
@@ -49,7 +51,7 @@ public class Hidato {
     }
 
 
-    public static void generaMatAdj(){
+    public void generaMatAdj(){
         matAdj = new ArrayList <ArrayList<Integer> >(taulell.columnes*taulell.files);
 
         if (taulell.Tcela.equals("Q")){
@@ -195,7 +197,7 @@ public class Hidato {
         }
     }
 
-    public static void posarForats() {
+    public void posarForats() {
         System.out.println("posar forats(*): coorX coordY ");
         System.out.println("per acabar: exit");
         Scanner teclado = new Scanner(System.in);
@@ -214,7 +216,7 @@ public class Hidato {
         }
     }
 
-    public static void posarNumeros() {
+    public void posarNumeros() {
         System.out.println("posar numeros: coorX coordY num ");
         System.out.println("per acabar: exit");
         Scanner teclado = new Scanner(System.in);
@@ -234,7 +236,7 @@ public class Hidato {
         }
     }
 
-    public static void imprimirMatAdj(){
+    public void imprimirMatAdj(){
         for (int i = 0; i < matAdj.size(); i++){
             System.out.print("per i = " + i + "  ");
             for (int j = 0; j < matAdj.get(i).size(); j++){
@@ -244,14 +246,14 @@ public class Hidato {
         }
     }
 
-    private static int[] given, start;
+    private int[] given, start;
 
-    public static boolean resol(){
+    public boolean resol(){
         setup();
         return solve(start[0],start[1],1,0);
     }
 
-    public static void setup(){
+    public void setup(){
 
         int filas = mContingut.length;
         int columnas =  mContingut[0].length;
@@ -283,14 +285,14 @@ public class Hidato {
 
     }
 
-    private static int pasaraenter(String s){
+    private int pasaraenter(String s){
         if(s.equals("?")) return 0;
         else if(s.equals("#"))return -1;
         else if (s.equals("*"))return  -2;
         else return Integer.parseInt(s);
     }
 
-    private static boolean solve(int r, int c, int n, int next) {
+    private boolean solve(int r, int c, int n, int next) {
 
         String val = mContingut[r][c];
         int back = pasaraenter(val);
@@ -402,7 +404,7 @@ public class Hidato {
         return false;
     }
 
-    public static void imprimirMContingut(){
+    public void imprimirMContingut(){
         for (int i = 0; i < mContingut.length; i++){
             for (int j = 0; j < mContingut[i].length; j++){
                 if (j < mContingut[i].length - 1) {
@@ -415,19 +417,4 @@ public class Hidato {
             System.out.println();
         }
     }
-
-    public static void main(String[] arg){
-        taulell = new Taulell();
-        Hidato hidato = new Hidato(1,"", taulell);
-        hidato.posarForats();
-        hidato.posarNumeros();
-        hidato.generaMatAdj();
-        hidato.imprimirMatAdj();
-        taulell.imprimirMContingut();
-        hidato.imprimirMatAdj();
-        imprimirMContingut();
-        resol();
-        imprimirMContingut();
-    }
-
 }
