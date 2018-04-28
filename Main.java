@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 
 public class Main {
-    
+
     private static void menuPartida(Partida p){
         String s = "";
         while(!s.equals("0")){
@@ -12,7 +12,9 @@ public class Main {
             System.out.println("Menu:\n"
                     + "0 --> Sortir\n"
                     + "1 --> Posar Num\n"
-                    + "2 --> Borrar Num\n");
+                    + "2 --> Borrar Num\n"
+                    + "3 --> Surrender\n"
+                    + "4 --> Validar");
             s = teclado.nextLine();
             if(s.length() == 1){
                 switch(s){
@@ -28,9 +30,16 @@ public class Main {
                         h = n.split(" ");
                         p.borrarNum(Integer.parseInt(h[0]),Integer.parseInt(h[1]));
                         break;
+                    case "3":
+                        p.resol_hidato();
+                        p.acabar();
+                        break;
+                    case "4":
+                        p.validar();
+                        if(p.getAcabat()) s = "0";
+                        break;
                     default:
                         p.acabar();
-                        System.out.println("Temps:"+p.getTemps()+"s");
                         break;
                 }
             }
@@ -63,7 +72,7 @@ public class Main {
                     System.out.print("password:");
                     String password = teclado.nextLine();
                     Usuari u = new Usuari(nick, password);
-                    System.out.println("Usuari: " + u.getnikname() 
+                    System.out.println("Usuari: " + u.getnikname()
                             + " " + u.getPsw());
                     break;
                 case "2":
