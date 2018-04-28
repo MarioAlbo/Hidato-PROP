@@ -29,6 +29,7 @@ public class Partida {
 
     public void acabar(){
         acabat=true;
+        System.out.println("Temps:"+getTemps()+"s");
     }
 
     public Partida(int id,String jugador, Hidato hi){
@@ -68,6 +69,19 @@ public class Partida {
 
     public void ajuda(){
 
+    }
+
+    public void resol_hidato(){
+        if(!hidato.resol())System.out.println("No es pot resoldre");
+        else hidato.imprimirMContingut();
+    }
+
+    public void validar(){
+        if(hidato.validar()){
+            System.out.println("L'Hidato esta resolt");
+            this.acabar();
+        }
+        else System.out.println("L'Hidato es incorrecte");
     }
 
     private boolean isNumeric(String cadena) {
