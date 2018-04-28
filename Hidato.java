@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+import java.util.Random;
 import java.util.Scanner;
 import java.util.List;
 import java.util.Collections;
@@ -17,8 +18,8 @@ public class Hidato {
         this.nickname = nick;
         this.mContingut = t.mContingut;
         this.taulell = t;
-        posarForats(); //<----FALTAVA AIXO
-        posarNumeros();//<----FALTAVA AIXO
+        posarForats();
+        posarNumeros();
         generaMatAdj();
     }
 
@@ -27,7 +28,7 @@ public class Hidato {
         this.nickname = nick;
         String d;
         if (dificultat == 1){
-            d = "Q,C,3,3";
+            d = "Q,CA,3,3";
         }
         else if (dificultat == 2){
             d = "Q,CA,4,4";
@@ -43,13 +44,53 @@ public class Hidato {
         }
         Taulell t = new Taulell(d);
         this.taulell = t;
-
-        //AQUI S'HAURAN DE FER COSES AMB LA MCONTINGUT, QUE NECESSITARAN EL CODI DE LA IA
-
-        //de moment ho deiemaixi
         this.mContingut = t.mContingut;
+        generaMatAdj();
+        generaAutomaticament();
+
     }
 
+    private void generaAutomaticament(){
+        Random rand = new Random();
+        boolean f = false;
+        Integer cx1 = 0;
+        Integer cy1 = 0;
+        Integer cx2 = 0;
+        Integer cy2 = 0;
+        while (!f) {
+            cx1 = rand.nextInt(taulell.files);
+            cy1 = rand.nextInt(taulell.columnes);
+            mContingut[cx1][cy1] = "1";
+            cx2 = rand.nextInt(taulell.files);
+            cy2 = rand.nextInt(taulell.columnes);
+            while (cx1 == cx2 && cy1 == cy2) {
+                cx2 = rand.nextInt(taulell.files);
+                cy2 = rand.nextInt(taulell.columnes);
+            }
+
+            mContingut[cx2][cy2] = Integer.toString(taulell.files * taulell.columnes);
+            f = resol();
+        }
+        ArrayList<Integer> posicions = new ArrayList<Integer>(); // x y n
+        for (int i = 0; i < (taulell.files * taulell.columnes)/4; i++){
+            Integer cx = rand.nextInt(taulell.files);
+            Integer cy = rand.nextInt(taulell.columnes);
+            posicions.add(cx);
+            posicions.add(cy);
+            posicions.add(Integer.parseInt(mContingut[cx][cy]));
+        }
+        for (int i = 0; i < taulell.files; i++) {
+            for (int j = 0; j < taulell.columnes; j++) {
+                mContingut[i][j] = "?";
+            }
+        }
+
+        mContingut[cx1][cy1] = "1";
+        mContingut[cx2][cy2] = Integer.toString(taulell.files * taulell.columnes);
+        for (int i = 0; i < posicions.size(); i = i + 3){
+            mContingut[posicions.get(i)][posicions.get(i+1)] = Integer.toString(posicions.get(i+2));
+        }
+    }
 
     public void generaMatAdj(){
         matAdj = new ArrayList <ArrayList<Integer> >(taulell.columnes*taulell.files);
@@ -308,92 +349,12 @@ public class Hidato {
 
         mContingut[r][c] = ""+n;
 
-        if(taulell.Tcela.equals("Q")){
-            if(taulell.Tadjacecnia.equals("CA")){
-                for (int i = -1; i < 2; i++)
-                    for (int j = -1; j < 2; j++)
-                        if (((r + i >= 0) && (c + j>= 0)) && ((r + i < mContingut.length) && (c + j< mContingut[0].length))&& solve(r + i, c + j, n + 1, next))
-                            return true;
-            }
-            else if(taulell.Tadjacecnia.equals("C")){
-                if ((r - 1 >= 0) && solve(r - 1, c , n + 1, next))return true;
-                if ((c - 1 >= 0) && solve(r , c - 1, n + 1, next))return true;
-                if ((r + 1 < mContingut.length) && solve(r + 1, c, n + 1, next))return true;
-                if ((c + 1 < mContingut[0].length) && solve(r , c + 1, n + 1, next))return true;
-            }
-        }
-        else if(taulell.Tcela.equals("T")){
-            if(taulell.Tadjacecnia.equals("CA")) {
-                if( r%2 == 0 && c%2 == 0) {
-                    for (int i = -1; i < 2; i++) {
-                        for (int j = -1; j < 2; j++) {
-                            if ((((r - 1 >= 0) && (c + j >= 0)) && (c + j < mContingut[0].length)) && solve(r - 1, c + j, n + 1, next))
-                                return true;
-                        }
-                        for (int j = -2; j < 3; j++)
-                            if (((r + i >= 0) && (c + j >= 0)) && ((r + i < mContingut.length) && (c + j < mContingut[0].length)) && solve(r + i, c + j, n + 1, next))
-                                return true;
-                    }
-                }
-                else {
-                    for (int i = -1; i < 2; i++) {
-                        for (int j = -1; j < 2; j++) {
-                            if (((c + j >= 0)) && ((r + 1 < mContingut.length) && (c + j < mContingut[0].length)) && solve(r + 1, c + j, n + 1, next))
-                                return true;
-                        }
-                        for (int j = -2; j < 3; j++)
-                            if (((r + i >= 0) && (c + j >= 0)) && ((r + i < mContingut.length) && (c + j < mContingut[0].length)) && solve(r + i, c + j, n + 1, next))
-                                return true;
-                    }
-                }
-            }
-            else if(taulell.Tcela.equals("C")) {
-                if(r%2 == 0 && c%2 == 0 ||(r%2 != 0 && c%2 != 0)) {
-                    for (int j = -1; j < 2; j++){
-                        if (((c + j >= 0) && (c + j < mContingut[0].length)) && solve(r , c + j, n + 1, next))
-                            return true;
-                    }
-                    if (((r + 1 < mContingut.length)) && solve(r + 1, c , n + 1, next))
-                        return true;
-                }
-                else {
-                    for (int j = -1; j < 2; j++) {
-                        if (((c + j >= 0) && (c + j < mContingut[0].length)) && solve(r , c + j, n + 1, next))
-                            return true;
-                    }
-                    if (((r - 1 >= 0) && (r - 1 < mContingut.length)) && solve(r - 1, c , n + 1, next))
-                        return true;
-                }
-            }
-        }
+        int t = mContingut[r].length;
+        int pos = r*t + c;
 
-        else if(taulell.Tcela.equals("H")){
-            if(r%2==0) {
-                for (int i = -1; i < 2; i++)
-                    if(i==0) {
-                        for (int j = -1; j < 2; j++)
-                            if ((c + j >= 0) && ((r + i < mContingut.length) && (c + j < mContingut[0].length)) && solve(r + i, c + j, n + 1, next))
-                                return true;
-                    }
-                    else{
-                        for (int j = -1; j < 1; j++)
-                            if (((r + i >= 0) && (c + j >= 0)) && ((r + i < mContingut.length) && (c + j < mContingut[0].length)) && solve(r + i, c + j, n + 1, next))
-                                return true;
-                    }
-            }
-            else {
-                for (int i = -1; i < 2; i++)
-                    if(i==0) {
-                        for (int j = -1; j < 2; j++)
-                            if (((c + j >= 0)) && ((r + i < mContingut.length) && (c + j < mContingut[0].length)) && solve(r + i, c + j, n + 1, next))
-                                return true;
-                    }
-                    else{
-                        for (int j = 0; j < 2; j++)
-                            if ((r + i >= 0) && ((r + i < mContingut.length) && (c + j < mContingut[0].length)) && solve(r + i, c + j, n + 1, next))
-                                return true;
-                    }
-            }
+        for(int i = 0; i < matAdj.get(pos).size(); i++) {
+            int nc = matAdj.get(pos).get(i);
+            if (solve(nc/t,nc%t ,n + 1, next))return true;
         }
 
         if(back == 0)mContingut[r][c] = "?";
@@ -416,5 +377,24 @@ public class Hidato {
             }
             System.out.println();
         }
+    }
+
+    public boolean validar(){
+        int files = mContingut.length;
+        int columnes = mContingut[0].length;
+        if(start.length == 0)setup();
+        int pos = start[0]*columnes + start[1];
+        for(int i = 2; i <= files*columnes; i++){
+            boolean b = false;
+            for(int j = 0; j < matAdj.get(pos).size() && !b; j++){
+                int p = matAdj.get(pos).get(j);
+                if((""+i).equals(mContingut[p/columnes][p%columnes])){
+                    b = true;
+                    pos = p;
+                }
+            }
+            if(!b)return false;
+        }
+        return true;
     }
 }
