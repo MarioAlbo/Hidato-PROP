@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 
 public class Main {
-
+public static Conj_partida repositori_partides = new Conj_partida();
     private static void menuPartida(Partida p){
         String s = "";
         while(!s.equals("0")){
@@ -14,7 +14,8 @@ public class Main {
                     + "1 --> Posar Num\n"
                     + "2 --> Borrar Num\n"
                     + "3 --> Surrender\n"
-                    + "4 --> Validar");
+                    + "4 --> Validar\n"
+                    + "5 --> Guardar");
             s = teclado.nextLine();
             if(s.length() == 1){
                 switch(s){
@@ -37,6 +38,10 @@ public class Main {
                     case "4":
                         p.validar();
                         if(p.getAcabat()) s = "0";
+                        break;
+                    case "5":
+                        repositori_partides.guardar_partida(p);
+                        System.out.println("La partida " + p.getIdP()+ " ha sigut guardada");
                         break;
                     default:
                         p.acabar();
@@ -63,7 +68,9 @@ public class Main {
                     + "6 --> Crear Taulell\n7 --> Modificar Taulell\n"
                     + "8 --> Crear Hidato a partir de Taulell\n"
                     + "9 --> Veure Llista Hidatos\n"
-                    + "10--> Veure Llita Taulells");
+                    + "10--> Veure Llita Taulells\n"
+                    + "11--> Cargar Partida\n"
+                    + "12--> Borrar Partida");
             s = teclado.nextLine();
             if(s.length()== 1 || s.length()== 2) switch (s) {
                 case "1":
@@ -181,6 +188,29 @@ public class Main {
                         System.out.print("veure Taulell de nom: ");
                         String nomTaulell = teclado.nextLine();
                         Taulells.get(nomTaulell).imprimirMContingut();
+                    }
+                    break;
+                case "11":
+                    System.out.print("Quina partidas vols carregar? ");
+                    String idP = teclado.next();
+                    int idp = Integer.parseInt(idP);
+                    if (repositori_partides.partides_guardades.containsKey(idp)) {
+                        Partida p = repositori_partides.cargar_partida(idp);
+                        menuPartida(p);
+                    }
+                    else {
+                        System.out.print("La partida amb ID " + idp + " no existeix\n");
+                    }
+                    break;
+                case "12":
+                    System.out.print("Quina partidas vols carregar? ");
+                    String idPp = teclado.next();
+                    int idpp = Integer.parseInt(idPp);
+                    if (repositori_partides.partides_guardades.containsKey(idpp)) {
+                        repositori_partides.borrar_partida(idpp);
+                    }
+                    else {
+                        System.out.print("La partida amb ID " + idpp + " no existeix\n");
                     }
                     break;
                 default:
