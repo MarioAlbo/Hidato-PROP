@@ -44,6 +44,5 @@ public class Usuari {
     public void cambiarnikname(String nom){
         nikname = nom;
     }
-    //pedo
 }
 
