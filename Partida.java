@@ -45,11 +45,12 @@ public class Partida {
     }
 
     public void clonarMatriu(String[][] a){
-        for(int i = 0; i < a.length ; i++)
-            for(int j = 0; j < a[0].length; j++){
+        for(int i = 0; i < a.length ; i++) {
+            for (int j = 0; j < a[0].length; j++) {
                 String c = a[i][j];
                 mCoriginal[i][j] = c;
             }
+        }
     }
 
     public void posarNum(int x, int y, String n){
@@ -85,17 +86,16 @@ public class Partida {
     }
 
     private boolean isNumeric(String cadena) {
-
         boolean resultado;
-
         try {
             Integer.parseInt(cadena);
             resultado = true;
         } catch (NumberFormatException excepcion) {
             resultado = false;
         }
-
         return resultado;
     }
-
+    public Hidato getHidato() {
+        return hidato;
+    }
 }
