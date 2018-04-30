@@ -21,20 +21,20 @@ public class Usuari {
     /**
      * imprimeix i dona els paramentres de la instacia de la clase Usuari
      * @param nom: nick de l'objecte usuari
-     * @param contraseña: psw de l'objecte usuari
+     * @param contrasenya: psw de l'objecte usuari
      */
-    public Usuari(String nom, String contraseña){
-        System.out.println("Nuevo usuario: "+nom+" "+contraseña);
+    public Usuari(String nom, String contrasenya){
+        System.out.println("Nuevo usuario: "+nom+" "+contrasenya);
         nikname = nom;
-        psw = contraseña;
+        psw = contrasenya;
     }
 
     /**
      * canvia el valor del parametre psw de la instancia d'Usuari
-     * @param contraseña: nou valor del parametre psw
+     * @param contrasenya: nou valor del parametre psw
      */
-    public void cambiarcontraseña(String contraseña){
-        psw = contraseña;
+    public void cambiarcontrasenya(String contrasenya){
+        psw = contrasenya;
     }
 
     /**
@@ -44,5 +44,6 @@ public class Usuari {
     public void cambiarnikname(String nom){
         nikname = nom;
     }
+    //pedo
 }
 
