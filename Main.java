@@ -1,6 +1,4 @@
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class Main {
@@ -15,7 +13,8 @@ public static Conj_partida repositori_partides = new Conj_partida();
                     + "2 --> Borrar Num\n"
                     + "3 --> Surrender\n"
                     + "4 --> Validar\n"
-                    + "5 --> Guardar");
+                    + "5 --> Guardar \n");
+
             s = teclado.nextLine();
             if(s.length() == 1){
                 switch(s){
@@ -55,17 +54,21 @@ public static Conj_partida repositori_partides = new Conj_partida();
         Map<String,Taulell> Taulells = new HashMap<>();
         Map<Integer,Hidato> Hidatos = new HashMap<>();
         Map<Integer,Partida> Partidas = new HashMap<>();
+        Map<String, Usuari> jugadors = new HashMap<>();
         Integer idHidato = 0;
         String nombre = "Anon";
         String s = "";
         while(!s.equals("0")){
             Scanner teclado = new Scanner(System.in);
             System.out.println("COMANDOS:\n"
-                    + "0 --> Sortir\n1 --> Crear usuari\n"
+                    + "0 --> Sortir\n"
+                    + "1 --> Crear usuari\n"
                     + "2 --> Crear hidato manualment\n"
                     + "3 --> Crear hidato automaticament\n"
-                    + "4 --> Modificar hidato\n5 --> Jugar\n"
-                    + "6 --> Crear Taulell\n7 --> Modificar Taulell\n"
+                    + "4 --> Modificar hidato\n"
+                    + "5 --> Jugar\n"
+                    + "6 --> Crear Taulell\n"
+                    + "7 --> Modificar Taulell\n"
                     + "8 --> Crear Hidato a partir de Taulell\n"
                     + "9 --> Veure Llista Hidatos\n"
                     + "10--> Veure Llita Taulells\n"
@@ -79,6 +82,7 @@ public static Conj_partida repositori_partides = new Conj_partida();
                     System.out.print("password:");
                     String password = teclado.nextLine();
                     Usuari u = new Usuari(nick, password);
+                    jugadors.put(nick, u);
                     System.out.println("Usuari: " + u.getnikname()
                             + " " + u.getPsw());
                     break;
@@ -111,18 +115,23 @@ public static Conj_partida repositori_partides = new Conj_partida();
                     if (Hidatos.size() > 0) {
                         System.out.print("nickname:");
                         nick = teclado.nextLine();
-                        System.out.print("Seleciona hidato: ");
-                        for (Integer key : Hidatos.keySet()) {
-                            System.out.print(key + " ");
+                        if (jugadors.containsKey(nick)) {
+                            System.out.print("Seleciona hidato: \n");
+                            for (Integer key : Hidatos.keySet()) {
+                                System.out.print(key + " ");
+                            }
+                            System.out.println();
+                            idH = Integer.parseInt(teclado.nextLine());
+                           // Hidatos.get(idH).imprimirMContingut();
+                            Partida partida = new Partida(Partidas.size(), nick,
+                                    Hidatos.get(idH));
+                            partida.getHidato().imprimirMContingut();
+                            menuPartida(partida);
+                            Partidas.put(Partidas.size(), partida);
                         }
-                        System.out.println();
-                        idH = Integer.parseInt(teclado.nextLine());
-                        Hidatos.get(idH).imprimirMContingut();
-                        Partida partida = new Partida(Partidas.size(), nick,
-                                Hidatos.get(idH));
-                        menuPartida(partida);
-                        Partidas.put(Partidas.size(), partida);
-                    } else System.out.println("Crea un hidato abans");
+                        else System.out.println("No existeix l'usuari amb nick " + nick);
+                    }
+                    else System.out.println("Crea un hidato abans");
                     break;
                 case "6":
                     System.out.print("nom del taulell:");
@@ -191,26 +200,43 @@ public static Conj_partida repositori_partides = new Conj_partida();
                     }
                     break;
                 case "11":
-                    System.out.print("Quina partidas vols carregar? ");
-                    String idP = teclado.next();
-                    int idp = Integer.parseInt(idP);
-                    if (repositori_partides.partides_guardades.containsKey(idp)) {
-                        Partida p = repositori_partides.cargar_partida(idp);
-                        menuPartida(p);
+                    if (repositori_partides.partides_guardades.size() == 0) {
+                        System.out.print("No hi ha partides guardades\n");
                     }
                     else {
-                        System.out.print("La partida amb ID " + idp + " no existeix\n");
+                        System.out.print("Partides: \n");
+                        for (Map.Entry<Integer, Partida> entry : repositori_partides.partides_guardades.entrySet()) {
+                            System.out.print(entry.getKey() + "\n");
+                        }
+                        System.out.print("Quina partidas vols carregar?\n ");
+                        String idP = teclado.next();
+                        int idp = Integer.parseInt(idP);
+                        if (repositori_partides.partides_guardades.containsKey(idp)) {
+                            Partida p = repositori_partides.cargar_partida(idp);
+                            p.getHidato().imprimirMContingut();
+                            menuPartida(p);
+                        } else {
+                            System.out.print("La partida amb ID " + idp + " no existeix\n");
+                        }
                     }
                     break;
                 case "12":
-                    System.out.print("Quina partidas vols carregar? ");
-                    String idPp = teclado.next();
-                    int idpp = Integer.parseInt(idPp);
-                    if (repositori_partides.partides_guardades.containsKey(idpp)) {
-                        repositori_partides.borrar_partida(idpp);
+                    if (repositori_partides.partides_guardades.size() == 0) {
+                        System.out.print("No hi ha partides guardades \n");
                     }
                     else {
-                        System.out.print("La partida amb ID " + idpp + " no existeix\n");
+                        System.out.print("Partides: \n");
+                        for (Map.Entry<Integer, Partida> entry : repositori_partides.partides_guardades.entrySet()) {
+                            System.out.print(entry.getKey() + "\n");
+                        }
+                        System.out.print("Quina partidas vols borrar?\n ");
+                        String idPp = teclado.next();
+                        int idpp = Integer.parseInt(idPp);
+                        if (repositori_partides.partides_guardades.containsKey(idpp)) {
+                            repositori_partides.borrar_partida(idpp);
+                        } else {
+                            System.out.print("La partida amb ID " + idpp + " no existeix\n");
+                        }
                     }
                     break;
                 default:
