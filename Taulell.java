@@ -66,8 +66,6 @@ public class Taulell {
             s = teclado.nextLine();
         }
     }
-
-
     public void imprimirMContingut(){
         System.out.print(Tcela + "," + Tadjacecnia + "," + files + "," + columnes);
         System.out.println();

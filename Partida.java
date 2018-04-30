@@ -76,8 +76,7 @@ public class Partida {
     public void clonarMatriu(String[][] a){
         for(int i = 0; i < a.length ; i++) {
             for (int j = 0; j < a[0].length; j++) {
-                String c = a[i][j];
-                mCoriginal[i][j] = c;
+                mCoriginal[i][j] = a[i][j];
             }
         }
     }
