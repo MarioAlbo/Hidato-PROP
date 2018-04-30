@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-
 import java.util.Random;
 import java.util.Scanner;
 import java.util.List;
@@ -12,7 +11,12 @@ public class Hidato {
     public static ArrayList <ArrayList<Integer> > matAdj; //id [i][j] = i*col + j
     public static String[][] mContingut;
 
-
+    /**
+     * Crea un Hidato a partir d'un Taulell
+     * @param idh: identidicador del Hidato
+     * @param nick: nom de l'usuari que crea el Hidato
+     * @param t: Taulell del qual es crea el Hidato
+     */
     public Hidato(int idh, String nick, Taulell t) { //CREAR mContingut A PARTIR DE TAULELL
         this.idH = idh;
         this.nickname = nick;
@@ -23,6 +27,12 @@ public class Hidato {
         generaMatAdj();
     }
 
+    /**
+     * Crea un Hidato y un Taulell de forma automatica a partit d'un paramentre de dificultat
+     * @param idh: identifiacador del Hidato
+     * @param nick: nom de l'usuari que crea el Hidato
+     * @param dificultat: parametre de dificultad per crear el Taulell
+     */
     public Hidato(int idh, String nick, int dificultat){ //CREAR mContingut AUTOMATICAMENT
         this.idH = idh;
         this.nickname = nick;
@@ -50,6 +60,9 @@ public class Hidato {
 
     }
 
+    /**
+     * crea una matriu de contingut de forma random
+     */
     private void generaAutomaticament(){
         Random rand = new Random();
         boolean f = false;
@@ -92,6 +105,9 @@ public class Hidato {
         }
     }
 
+    /**
+     * crea una matriu de contingut a partir de la matriu de contingut
+     */
     public void generaMatAdj(){
         matAdj = new ArrayList <ArrayList<Integer> >(taulell.columnes*taulell.files);
 
@@ -238,6 +254,9 @@ public class Hidato {
         }
     }
 
+    /**
+     * omple la matriu de contingut amb '*' a les coordenades indicades
+     */
     public void posarForats() {
         System.out.println("posar forats(*): coorX coordY ");
         System.out.println("per acabar: exit");
@@ -257,6 +276,9 @@ public class Hidato {
         }
     }
 
+    /**
+     * posa un numero a les coordenades indicades
+     */
     public void posarNumeros() {
         System.out.println("posar numeros: coorX coordY num ");
         System.out.println("per acabar: exit");
@@ -277,6 +299,9 @@ public class Hidato {
         }
     }
 
+    /**
+     * mostra per pantalla la matriu d'adjacencies
+     */
     public void imprimirMatAdj(){
         for (int i = 0; i < matAdj.size(); i++){
             System.out.print("per i = " + i + "  ");
@@ -289,11 +314,18 @@ public class Hidato {
 
     private int[] given, start;
 
+    /**
+     * retorna una expressió booleana si el Hidato està resolt
+     * @return: retorn un boolea indicant si l'Hodato està resolt
+     */
     public boolean resol(){
         setup();
         return solve(start[0],start[1],1,0);
     }
 
+    /**
+     * indica la posició per começar a resoldre l'hidato (on es troba el '1')
+     */
     public void setup(){
 
         int filas = mContingut.length;
@@ -326,6 +358,11 @@ public class Hidato {
 
     }
 
+    /**
+     * retorna el valor numeric d'una posició de la matriu de contingut si aquesta conté un numero en forma de String
+     * @param s: String que volem comprobar si correspon a un número
+     * @return: retorn el valor numeric del String si aquest és un numero i [0,-1,-2] si no ho és
+     */
     private int pasaraenter(String s){
         if(s.equals("?")) return 0;
         else if(s.equals("#"))return -1;
@@ -333,6 +370,14 @@ public class Hidato {
         else return Integer.parseInt(s);
     }
 
+    /**
+     * indica si un Hidato està resolt correctament
+     * @param r:
+     * @param c
+     * @param n
+     * @param next
+     * @return
+     */
     private boolean solve(int r, int c, int n, int next) {
 
         String val = mContingut[r][c];
@@ -365,6 +410,9 @@ public class Hidato {
         return false;
     }
 
+    /**
+     * mostra per pantalla la matriu de contingut del Hidato
+     */
     public void imprimirMContingut(){
         for (int i = 0; i < mContingut.length; i++){
             for (int j = 0; j < mContingut[i].length; j++){
@@ -379,6 +427,10 @@ public class Hidato {
         }
     }
 
+    /**
+     * indica si un Hidato és correcte
+     * @return: retorn el valor booleà de validar el Hidato
+     */
     public boolean validar(){
         int files = mContingut.length;
         int columnes = mContingut[0].length;
