@@ -38,7 +38,7 @@ public class Hidato {
         this.nickname = nick;
         String d;
         if (dificultat == 1){
-            d = "Q,CA,3,3";
+            d = "Q,C,3,3";
         }
         else if (dificultat == 2){
             d = "Q,CA,4,4";
@@ -216,7 +216,7 @@ public class Hidato {
                                     matAdj.get(i * taulell.getColumnes() + j).add((i - 1) * taulell.getColumnes() + j + 1);
                                 if (j - 2 >= 0 && taulell.getmContingut()[i][j - 2] != "#" && taulell.getmContingut()[i][j - 2] != "*")
                                     matAdj.get(i * taulell.getColumnes() + j).add(i * taulell.getColumnes() + j - 2);
-                                if (j + 2 < taulell.getColumnes() && taulell.getmContingut()[i + 2][j] != "#" && taulell.getmContingut()[i + 2][j] != "*")
+                                if (j + 2 < taulell.getColumnes() && taulell.getmContingut()[i][j + 2] != "#" && taulell.getmContingut()[i][j + 2] != "*")
                                     matAdj.get(i * taulell.getColumnes() + j).add(i * taulell.getColumnes() + j + 2);
                                 if (i + 1 < taulell.getFiles() && j - 2 >= 0 && taulell.getmContingut()[i + 1][j - 2] != "#" && taulell.getmContingut()[i + 1][j - 2] != "*")
                                     matAdj.get(i * taulell.getColumnes() + j).add((i + 1) * taulell.getColumnes() + j - 2);
