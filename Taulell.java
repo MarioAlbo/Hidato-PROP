@@ -2,11 +2,51 @@ import java.util.Scanner;
 
 public class Taulell {
 
-    public static String Tcela;
-    public static String Tadjacecnia;
-    public static int files;
-    public static int columnes;
-    public static String[][] mContingut;
+    private static String Tcela;
+    private static String Tadjacecnia;
+    private static int files;
+    private static int columnes;
+    private static String[][] mContingut;
+
+    /**
+     * Dona el valor del atribut Tcela
+     * @return retorn el tipus de cel·la
+     */
+    public String getTcela() {
+        return Tcela;
+    }
+
+    /**
+     * Dona el valor del atribut Tadjacencia
+     * @return retorna el tipus de adjacencia
+     */
+    public String getTadjacecnia() {
+        return Tadjacecnia;
+    }
+
+    /**
+     * Dona el valor del atribut columnes
+     * @return retorna el el número de columnes del taulell
+     */
+    public int getColumnes() {
+        return columnes;
+    }
+
+    /**
+     * Dona el valor del atribut files
+     * @return retorna el el número de files del taulell
+     */
+    public int getFiles() {
+        return files;
+    }
+
+    /**
+     * Dona el atribut mContingut
+     * @return retorna la representació gráfica del taulell
+     */
+    public String[][] getmContingut() {
+        return mContingut;
+    }
 
     /**
      * Crea una nova instancia de la classe Taulell amb la especificació de tipus de cel·la, andajencia i tamany
