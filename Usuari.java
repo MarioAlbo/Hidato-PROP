@@ -19,7 +19,7 @@ public class Usuari {
     }
 
     /**
-     * imprimeix i dona els paramentres de la instacia de la clase Usuari
+     * Crea una instacia de la clase Usuari i imprimeix els paramentres
      * @param nom: nick de l'objecte usuari
      * @param contrasenya: psw de l'objecte usuari
      */

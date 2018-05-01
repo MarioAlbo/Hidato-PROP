@@ -8,6 +8,10 @@ public class Taulell {
     public static int columnes;
     public static String[][] mContingut;
 
+    /**
+     * Crea una nova instancia de la classe Taulell amb la especificació de tipus de cel·la, andajencia i tamany
+     * @param s: String que indica tipus de cel·la, adjacencia i tamany
+     */
     public Taulell(String s){
         String[] h = s.split(",");
         Tcela = h[0];
@@ -22,6 +26,9 @@ public class Taulell {
         }
     }
 
+    /**
+     * Creua una nova instancia de la classe Taulell a la qual s'introdueixen les caractesistiques per manualment
+     */
     public Taulell() {
         System.out.println("llegint taulell");
         Scanner teclado = new Scanner(System.in);
@@ -39,6 +46,9 @@ public class Taulell {
         }
     }
 
+    /**
+     * Possa forats(#) a les coordenades indicades
+     */
     public void posarForats() {
         System.out.println("posar forats(#): coorX coordY");
         System.out.println("per acabar: exit");
@@ -53,6 +63,9 @@ public class Taulell {
         }
     }
 
+    /**
+     * Treu els forats(#) a les coordenades indicades
+     */
     public void treuForats() {
         System.out.println("treure forats: coorX coordY");
         System.out.println("per acabar: exit");
@@ -66,6 +79,10 @@ public class Taulell {
             s = teclado.nextLine();
         }
     }
+
+    /**
+     * Mostra per pantalla la matriu de contingut del Taulell
+     */
     public void imprimirMContingut(){
         System.out.print(Tcela + "," + Tadjacecnia + "," + files + "," + columnes);
         System.out.println();

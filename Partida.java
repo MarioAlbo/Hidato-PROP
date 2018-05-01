@@ -112,7 +112,7 @@ public class Partida {
     }
 
     /**
-     * Imprimeix la matriu de contingut si l'Hidato està resolt
+     * Imprimeix la matriu de contingut si l'Hidato està resolt. Altrament treu un missatge d’error.
      */
     public void resol_hidato(){
         if(!hidato.resol())System.out.println("No es pot resoldre");

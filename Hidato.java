@@ -106,7 +106,7 @@ public class Hidato {
     }
 
     /**
-     * crea una matriu de contingut a partir de la matriu de contingut
+     * crea una matriu de contingut a partir de la matriu d'adjacencies
      */
     public void generaMatAdj(){
         matAdj = new ArrayList <ArrayList<Integer> >(taulell.columnes*taulell.files);
@@ -326,7 +326,7 @@ public class Hidato {
     /**
      * indica la posició per começar a resoldre l'hidato (on es troba el '1')
      */
-    public void setup(){
+    private void setup(){
 
         int filas = mContingut.length;
         int columnas =  mContingut[0].length;

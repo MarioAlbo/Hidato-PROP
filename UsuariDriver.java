@@ -11,7 +11,7 @@ public class UsuariDriver {
                     + "1 --> Obtenit nickname\n"
                     + "2 --> Obtenir password\n"
                     + "3 --> Canviar nickname\n"
-                    + "4 --> canviar password\n");
+                    + "4 --> Canviar password\n");
             Scanner teclado = new Scanner(System.in);
             s = teclado.nextLine();
             switch (s) {

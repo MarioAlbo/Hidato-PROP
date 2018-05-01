@@ -14,7 +14,7 @@ public class Conj_partida {
     }
 
     /**
-     * retorna una partida identtificada al Map amb la key = idp
+     * retorna una partida identificada al Map amb la key = idp
      * @param idp: key de la partida a retornar
      * @return: retorn de la partida amb key = idp
      */
