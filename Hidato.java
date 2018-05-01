@@ -38,7 +38,7 @@ public class Hidato {
         this.nickname = nick;
         String d;
         if (dificultat == 1){
-            d = "Q,CA,3,3";
+            d = "Q,C,3,3";
         }
         else if (dificultat == 2){
             d = "Q,CA,4,4";
