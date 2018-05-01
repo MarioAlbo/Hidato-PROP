@@ -24,7 +24,7 @@ public class Usuari {
      * @param contrasenya: psw de l'objecte usuari
      */
     public Usuari(String nom, String contrasenya){
-        System.out.println("Nuevo usuario: "+nom+" "+contrasenya);
+        //System.out.println("Nuevo usuario: "+nom+" "+contrasenya);
         nikname = nom;
         psw = contrasenya;
     }
