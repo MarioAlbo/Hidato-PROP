@@ -83,6 +83,10 @@ public class Hidato {
 
             mContingut[cx2][cy2] = Integer.toString(taulell.getFiles() * taulell.getColumnes());
             f = resol();
+            if (!f){
+                mContingut[cx1][cy1] = "?";
+                mContingut[cx2][cy2] = "?";
+            }
         }
         ArrayList<Integer> posicions = new ArrayList<Integer>(); // x y n
         for (int i = 0; i < (taulell.getFiles() * taulell.getColumnes())/4; i++){
