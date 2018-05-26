@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Iterator;
+import java.io.Serializable;
 
 public class Conj_partida implements Serializable{
     Map<Integer,Partida> partides_guardades = new HashMap<>();
