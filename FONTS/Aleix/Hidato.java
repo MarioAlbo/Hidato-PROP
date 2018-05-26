@@ -4,7 +4,7 @@ import java.util.Scanner;
 import java.util.List;
 import java.util.Collections;
 
-public class Hidato {
+public class Hidato implements Serializable{
     public int idH;
     public String nickname;
     public static Taulell taulell;
