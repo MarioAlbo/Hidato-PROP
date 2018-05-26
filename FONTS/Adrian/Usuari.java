@@ -1,4 +1,4 @@
-public class Usuari {
+public class Usuari implements Serializable{
     private String nikname;
     private String psw;
 
