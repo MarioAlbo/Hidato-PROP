@@ -1,3 +1,5 @@
+import java.io.Serializable;
+
 public class Usuari implements Serializable{
     private String nikname;
     private String psw;
