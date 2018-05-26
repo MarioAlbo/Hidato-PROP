@@ -1,4 +1,4 @@
-public class Partida {
+public class Partida implements Serializable{
     private final int idP;
     private final String idplayer;
     private final Tiempo temps;
