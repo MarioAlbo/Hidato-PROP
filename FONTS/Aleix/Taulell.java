@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Taulell {
+public class Taulell implements Serializable {
 
     private static String Tcela;
     private static String Tadjacecnia;
