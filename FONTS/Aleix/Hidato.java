@@ -3,6 +3,7 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.List;
 import java.util.Collections;
+import java.io.Serializable;
 
 public class Hidato implements Serializable{
     public int idH;
