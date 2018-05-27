@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.io.Serializable;
 
 public class Hidato implements Serializable{
-    public int idH;
+    private int idH;
     public String nickname;
     public static Taulell taulell;
     public static ArrayList <ArrayList<Integer> > matAdj; //id [i][j] = i*col + j
@@ -27,6 +27,8 @@ public class Hidato implements Serializable{
         posarNumeros();
         generaMatAdj();
     }
+    
+     public int getIdH() {return idH;}
 
     /**
      * Crea un Hidato y un Taulell de forma automatica a partit d'un paramentre de dificultat
