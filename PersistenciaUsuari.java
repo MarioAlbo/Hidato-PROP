@@ -19,7 +19,8 @@ public class PersistenciaUsuari {
             ois.close();
             return u;
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Usuari err = null;
+            return err;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

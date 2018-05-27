@@ -20,12 +20,18 @@ public class PersistenciaHidato {
             ois.close();
             return h;
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Hidato err = null;
+            return err;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return h;
+    }
+
+    public void borrar_hidato(File file) {
+        if (file.delete()) System.out.println("Hidato borrat correctament");
+        else System.out.println("El Hidato no estava guardat");
     }
 }

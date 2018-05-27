@@ -20,12 +20,18 @@ public class PersistenciaTaulell {
             ois.close();
             return t;
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Taulell err = null;
+            return err;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return t;
+    }
+
+    public void borrar_taulell(File file) {
+        if (file.delete()) System.out.println("Taulell borrat correctament");
+        else System.out.println("El Taulell no estava guardat");
     }
 }
