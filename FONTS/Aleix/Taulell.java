@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 import java.io.Serializable;
 
@@ -21,7 +22,7 @@ public class Taulell implements Serializable {
      * Dona el valor del atribut Tadjacencia
      * @return retorna el tipus de adjacencia
      */
-    public String getTadjacecnia() {
+    public String getTadjacencia() {
         return Tadjacecnia;
     }
 
@@ -71,7 +72,7 @@ public class Taulell implements Serializable {
      * Creua una nova instancia de la classe Taulell a la qual s'introdueixen les caractesistiques per manualment
      */
     public Taulell() {
-        System.out.println("llegint taulell");
+        System.out.println("llegint taulell: (Tc,Ta,X,Y)");
         Scanner teclado = new Scanner(System.in);
         String s = teclado.nextLine();
         String[] h = s.split(",");

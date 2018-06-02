@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Collections;
 import java.io.Serializable;
 
-public class Hidato implements Serializable{
-    private int idH;
+public abstract class Hidato implements Serializable{
+    protected int idH;
     public String nickname;
-    public static Taulell taulell;
-    public static ArrayList <ArrayList<Integer> > matAdj; //id [i][j] = i*col + j
-    public static String[][] mContingut;
+    protected Taulell taulell;
+    protected ArrayList <ArrayList<Integer> > matAdj; //id [i][j] = i*col + j
+    protected String[][] mContingut;
 
     /**
      * Crea un Hidato a partir d'un Taulell
@@ -27,8 +27,11 @@ public class Hidato implements Serializable{
         posarNumeros();
         generaMatAdj();
     }
-    
-     public int getIdH() {return idH;}
+
+    public int getIdH() {return idH;}
+
+    public String getNickname() {return nickname;}
+
 
     /**
      * Crea un Hidato y un Taulell de forma automatica a partit d'un paramentre de dificultat
@@ -36,69 +39,136 @@ public class Hidato implements Serializable{
      * @param nick: nom de l'usuari que crea el Hidato
      * @param dificultat: parametre de dificultad per crear el Taulell
      */
+
     public Hidato(int idh, String nick, int dificultat){ //CREAR mContingut AUTOMATICAMENT
         this.idH = idh;
         this.nickname = nick;
         String d;
-        if (dificultat == 1){
-            d = "Q,C,3,3";
-        }
-        else if (dificultat == 2){
-            d = "Q,CA,4,4";
-        }
-        else{
-            d = "H,C,4,5";
+        switch (dificultat) {
+            case 1:
+                d = "Q,C,3,3";
+                break;
+            case 2:
+                d = "H,C,3,4";
+                break;
+            case 3:
+                d = "T,C,4,5";
+                break;
+            case 4:
+                d = "Q,CA,5,4";
+                break;
+            case 5:
+                d = "H,C,5,5";
+                break;
+            case 6:
+                d = "T,CA,5,6";
+                break;
+            case 7:
+                d = "Q,C,6,6";
+                break;
+            case 8:
+                d = "H,C,5,5";
+                break;
+            default:
+                d = "T,C,7,7";
+                break;
         }
         Taulell t = new Taulell(d);
         this.taulell = t;
         this.mContingut = t.getmContingut();
-        generaMatAdj();
         generaAutomaticament();
+
 
     }
 
     /**
      * crea una matriu de contingut de forma random
      */
-    private void generaAutomaticament(){
+    protected void generaAutomaticament(){
         Random rand = new Random();
         boolean f = false;
-        Integer cx1 = 0;
+        Integer cx1 = 0; //inicialitzacions que no es fan ervir pero necessaries pk compili
         Integer cy1 = 0;
         Integer cx2 = 0;
         Integer cy2 = 0;
+        int intent = 1;
         while (!f) {
+            //System.out.println("intent: "+ intent);
+            //intent++;
+            Integer numforats = 0;
+            if (taulell.getTcela().equals("T") && taulell.getTadjacencia().equals("C")){
+
+                int TCf = taulell.getFiles();
+                int TCc = taulell.getColumnes();
+                if (TCf%2 == 1 && TCc%2 == 1){
+                    mContingut[TCf-1][0] = "#";
+                    mContingut[TCf-1][TCc-1] = "#";
+                    numforats = 2;
+                }
+                else if (TCf%2 == 1 && TCc%2 == 0){
+                    mContingut[0][TCc-1] = "#";
+                    mContingut[TCf-1][0] = "#";
+                    numforats = 2;
+                }
+                else if (TCf%2 == 0 && TCc%2 == 0){
+                    mContingut[0][TCc-1] = "#";
+                    mContingut[TCf-1][TCc-1] = "#";
+                    numforats = 2;
+                }
+                // no s'ha de posar forats en el cas de f->0 c->0
+
+            }
+            Integer ff = rand.nextInt((taulell.getFiles() * taulell.getColumnes())/3 + 2); //numero de forats que posarem
+            //System.out.println("num forats: " + ff);
+            /*
+            for (int i = 0; i < ff; i++){
+                Integer ff1 = rand.nextInt(taulell.getFiles());
+                Integer ff2 = rand.nextInt(taulell.getColumnes());
+                mContingut[ff1][ff2] = "#";
+            } */
+            generaMatAdj();
             cx1 = rand.nextInt(taulell.getFiles());
             cy1 = rand.nextInt(taulell.getColumnes());
+            while (mContingut[cx1][cy1].equals("#")){
+                cx1 = rand.nextInt(taulell.getFiles());
+                cy1 = rand.nextInt(taulell.getColumnes());
+            }
             mContingut[cx1][cy1] = "1";
             cx2 = rand.nextInt(taulell.getFiles());
             cy2 = rand.nextInt(taulell.getColumnes());
-            while (cx1 == cx2 && cy1 == cy2) {
+            while ((mContingut[cx2][cy2].equals("#")) || (mContingut[cx2][cy2].equals("1"))) {
                 cx2 = rand.nextInt(taulell.getFiles());
                 cy2 = rand.nextInt(taulell.getColumnes());
             }
+            mContingut[cx2][cy2] = Integer.toString(taulell.getFiles() * taulell.getColumnes() - numforats);
 
-            mContingut[cx2][cy2] = Integer.toString(taulell.getFiles() * taulell.getColumnes());
+
+            //imprimirMContingut();
             f = resol();
-            if (!f){
-                mContingut[cx1][cy1] = "?";
-                mContingut[cx2][cy2] = "?";
+            if (!f){ // DESFER ELS CANVIS PER TORNAR A COMENÇAR
+                for (int i = 0; i < taulell.getFiles(); i++){
+                    for (int j = 0; j < taulell.getColumnes(); j++){
+                        mContingut[i][j]="?";
+                    }
+                }
             }
         }
+
         ArrayList<Integer> posicions = new ArrayList<Integer>(); // x y n
         for (int i = 0; i < (taulell.getFiles() * taulell.getColumnes())/4; i++){
             Integer cx = rand.nextInt(taulell.getFiles());
             Integer cy = rand.nextInt(taulell.getColumnes());
-            posicions.add(cx);
-            posicions.add(cy);
-            posicions.add(Integer.parseInt(mContingut[cx][cy]));
+            if (!(mContingut[cx][cy]).equals("#")){
+                posicions.add(cx);
+                posicions.add(cy);
+                posicions.add(Integer.parseInt(mContingut[cx][cy]));
+            }
         }
         for (int i = 0; i < taulell.getFiles(); i++) {
             for (int j = 0; j < taulell.getColumnes(); j++) {
-                mContingut[i][j] = "?";
+                if(!(mContingut[i][j].equals("#"))) mContingut[i][j] = "?";
             }
         }
-
         mContingut[cx1][cy1] = "1";
         mContingut[cx2][cy2] = Integer.toString(taulell.getFiles() * taulell.getColumnes());
         for (int i = 0; i < posicions.size(); i = i + 3){
@@ -109,156 +179,12 @@ public class Hidato implements Serializable{
     /**
      * crea una matriu de contingut a partir de la matriu d'adjacencies
      */
-    public void generaMatAdj(){
-        matAdj = new ArrayList <ArrayList<Integer> >(taulell.getColumnes()*taulell.getFiles());
-
-        if (taulell.getTcela().equals("Q")){
-            for (int i = 0; i < taulell.getFiles(); i++) {
-                for (int j = 0; j < taulell.getColumnes(); j++) {
-                    matAdj.add(new ArrayList<Integer>());
-                    if (taulell.getmContingut()[i][j] != "#" && taulell.getmContingut()[i][j] != "*") {
-                        if (j - 1 >= 0 && taulell.getmContingut()[i][j - 1] != "#" && taulell.getmContingut()[i][j - 1] != "*")
-                            matAdj.get(i * taulell.getColumnes() + j).add(i * taulell.getColumnes() + j - 1);
-                        if (j + 1 < taulell.getColumnes() && taulell.getmContingut()[i][j + 1] != "#" && taulell.getmContingut()[i][j + 1] != "*")
-                            matAdj.get(i * taulell.getColumnes() + j).add(i * taulell.getColumnes() + j + 1);
-                        if (i - 1 >= 0 && taulell.getmContingut()[i - 1][j] != "#" && taulell.getmContingut()[i - 1][j] != "*")
-                            matAdj.get(i * taulell.getColumnes() + j).add((i - 1) * taulell.getColumnes() + j);
-                        if (i + 1 < taulell.getFiles() && taulell.getmContingut()[i + 1][j] != "#" && taulell.getmContingut()[i + 1][j] != "*") {
-                            matAdj.get(i * taulell.getColumnes() + j).add((i + 1) * taulell.getColumnes() + j);
-                        }
-                    }
-                }
-            }
-            if (taulell.getTadjacecnia().equals("CA")) {
-                for (int i = 0; i < taulell.getFiles(); i++){
-                    for (int j = 0; j < taulell.getColumnes(); j++){
-                        if (taulell.getmContingut()[i][j] != "#" && taulell.getmContingut()[i][j] != "*"){
-                            if (j - 1 >= 0 && i - 1 >= 0 && taulell.getmContingut()[i - 1][j - 1] != "#" && taulell.getmContingut()[i - 1][j - 1] != "*")
-                                matAdj.get(i * taulell.getColumnes() + j).add((i - 1) * taulell.getColumnes() + j - 1);
-                            if (j + 1 < taulell.getColumnes() && i - 1 >= 0 && taulell.getmContingut()[i - 1][j + 1] != "#" && taulell.getmContingut()[i - 1][j + 1] != "*")
-                                matAdj.get(i * taulell.getColumnes() + j).add((i - 1) * taulell.getColumnes() + j + 1);
-                            if (j + 1 < taulell.getColumnes() && i + 1 < taulell.getFiles() && taulell.getmContingut()[i + 1][j + 1] != "#" && taulell.getmContingut()[i + 1][j + 1] != "*")
-                                matAdj.get(i * taulell.getColumnes() + j).add((i + 1) * taulell.getColumnes() + j + 1);
-                            if (j - 1 >= 0 && i + 1 < taulell.getFiles() && taulell.getmContingut()[i + 1][j - 1] != "#" && taulell.getmContingut()[i + 1][j - 1] != "*")
-                                matAdj.get(i * taulell.getColumnes() + j).add((i + 1) * taulell.getColumnes() + j - 1);
-                        }
-                    }
-                }
-            }
-
-        }
-        else if (taulell.getTcela().equals("H")) {
-            for (int i = 0; i < taulell.getFiles(); i++) {
-                for (int j = 0; j < taulell.getColumnes(); j++) {
-                    matAdj.add(new ArrayList<Integer>());
-                    if (taulell.getmContingut()[i][j] != "#" && taulell.getmContingut()[i][j] != "*") {
-                        if (i % 2 == 1) {
-                            if (i - 1 >= 0 && taulell.getmContingut()[i - 1][j] != "#" && taulell.getmContingut()[i - 1][j] != "*")
-                                matAdj.get(i * taulell.getColumnes() + j).add((i - 1) * taulell.getColumnes() + j);
-                            if (i - 1 >= 0 && j + 1 < taulell.getColumnes() && taulell.getmContingut()[i - 1][j + 1] != "#" && taulell.getmContingut()[i - 1][j + 1] != "*")
-                                matAdj.get(i * taulell.getColumnes() + j).add((i - 1) * taulell.getColumnes() + j + 1);
-                            if (j - 1 >= 0 && taulell.getmContingut()[i][j - 1] != "#" && taulell.getmContingut()[i][j - 1] != "*")
-                                matAdj.get(i * taulell.getColumnes() + j).add(i * taulell.getColumnes() + j - 1);
-                            if (j + 1 < taulell.getColumnes() && taulell.getmContingut()[i][j + 1] != "#" && taulell.getmContingut()[i][j + 1] != "*")
-                                matAdj.get(i * taulell.getColumnes() + j).add(i * taulell.getColumnes() + j + 1);
-                            if (i + 1 < taulell.getFiles() && taulell.getmContingut()[i + 1][j] != "#" && taulell.getmContingut()[i + 1][j] != "*")
-                                matAdj.get(i * taulell.getColumnes() + j).add((i + 1) * taulell.getColumnes() + j);
-                            if (i + 1 < taulell.getFiles() && j + 1 < taulell.getColumnes() && taulell.getmContingut()[i + 1][j + 1] != "#" && taulell.getmContingut()[i + 1][j + 1] != "*")
-                                matAdj.get(i * taulell.getColumnes() + j).add((i + 1) * taulell.getColumnes() + j + 1);
-                        }
-                        else {
-                            if (i - 1 >= 0 && taulell.getmContingut()[i - 1][j] != "#" && taulell.getmContingut()[i - 1][j] != "*")
-                                matAdj.get(i * taulell.getColumnes() + j).add((i - 1) * taulell.getColumnes() + j);
-                            if (i - 1 >= 0 && j - 1 >= 0 && taulell.getmContingut()[i - 1][j - 1] != "#" && taulell.getmContingut()[i + -1][j - 1] != "*")
-                                matAdj.get(i * taulell.getColumnes() + j).add((i - 1) * taulell.getColumnes() + j - 1);
-                            if (j - 1 >= 0 && taulell.getmContingut()[i + 1][j] != "#" && taulell.getmContingut()[i + 1][j] != "*")
-                                matAdj.get(i * taulell.getColumnes() + j).add(i * taulell.getColumnes() + j - 1);
-                            if (j + 1 < taulell.getColumnes() && taulell.getmContingut()[i][j + 1] != "#" && taulell.getmContingut()[i][j + 1] != "*")
-                                matAdj.get(i * taulell.getColumnes() + j).add(i * taulell.getColumnes() + j + 1);
-                            if (i + 1 < taulell.getFiles() && taulell.getmContingut()[i + 1][j] != "#" && taulell.getmContingut()[i + 1][j] != "*")
-                                matAdj.get(i * taulell.getColumnes() + j).add((i + 1) * taulell.getColumnes() + j);
-                            if (i + 1 < taulell.getFiles() && j - 1 >= 0 && taulell.getmContingut()[i + 1][j - 1] != "#" && taulell.getmContingut()[i + 1][j - 1] != "*")
-                                matAdj.get(i * taulell.getColumnes() + j).add((i + 1) * taulell.getColumnes() + j - 1);
-                        }
-                    }
-                }
-            }
-        }
-        else if (taulell.getTcela().equals("T")){
-            for (int i = 0; i < taulell.getFiles(); i++) {
-                for (int j = 0; j < taulell.getColumnes(); j++) {
-                    matAdj.add(new ArrayList<Integer>());
-                    if (taulell.getmContingut()[i][j] != "#" && taulell.getmContingut()[i][j] != "*") {
-                        if (j - 1 >= 0 && taulell.getmContingut()[i][j - 1] != "#" && taulell.getmContingut()[i][j - 1] != "*")
-                            matAdj.get(i * taulell.getColumnes() + j).add(i * taulell.getColumnes() + j - 1);
-                        if (j + 1 < taulell.getColumnes() && taulell.getmContingut()[i][j + 1] != "#" && taulell.getmContingut()[i][j + 1] != "*")
-                            matAdj.get(i * taulell.getColumnes() + j).add(i * taulell.getColumnes() + j + 1);
-                        if ((i + j) % 2 == 0) {
-                            if (i + 1 < taulell.getFiles() && taulell.getmContingut()[i + 1][j] != "#" && taulell.getmContingut()[i + 1][j] != "*")
-                                matAdj.get(i * taulell.getColumnes() + j).add((i + 1) * taulell.getColumnes() + j);
-                        }
-                        else {
-                            if (i - 1 >= 0 && taulell.getmContingut()[i - 1][j] != "#" && taulell.getmContingut()[i - 1][j] != "*")
-                                matAdj.get(i * taulell.getColumnes() + j).add((i - 1) * taulell.getColumnes() + j);
-                        }
-                    }
-                }
-            }
-            if (taulell.getTadjacecnia().equals("CA")){
-                for (int i = 0; i < taulell.getFiles(); i++) {
-                    for (int j = 0; j < taulell.getColumnes(); j++) {
-                        if (taulell.getmContingut()[i][j] != "#" && taulell.getmContingut()[i][j] != "*") {
-                            if ((i + j) % 2 == 0) {
-                                if (i - 1 >= 0 && j - 1 >= 0 && taulell.getmContingut()[i - 1][j - 1] != "#" && taulell.getmContingut()[i - 1][j - 1] != "*")
-                                    matAdj.get(i * taulell.getColumnes() + j).add((i - 1) * taulell.getColumnes() + j - 1);
-                                if (i - 1 >= 0 && taulell.getmContingut()[i - 1][j] != "#" && taulell.getmContingut()[i - 1][j] != "*")
-                                    matAdj.get(i * taulell.getColumnes() + j).add((i - 1) * taulell.getColumnes() + j);
-                                if (i - 1 >= 0 && j + 1 < taulell.getColumnes() && taulell.getmContingut()[i - 1][j + 1] != "#" && taulell.getmContingut()[i - 1][j + 1] != "*")
-                                    matAdj.get(i * taulell.getColumnes() + j).add((i - 1) * taulell.getColumnes() + j + 1);
-                                if (j - 2 >= 0 && taulell.getmContingut()[i][j - 2] != "#" && taulell.getmContingut()[i][j - 2] != "*")
-                                    matAdj.get(i * taulell.getColumnes() + j).add(i * taulell.getColumnes() + j - 2);
-                                if (j + 2 < taulell.getColumnes() && taulell.getmContingut()[i][j + 2] != "#" && taulell.getmContingut()[i][j + 2] != "*")
-                                    matAdj.get(i * taulell.getColumnes() + j).add(i * taulell.getColumnes() + j + 2);
-                                if (i + 1 < taulell.getFiles() && j - 2 >= 0 && taulell.getmContingut()[i + 1][j - 2] != "#" && taulell.getmContingut()[i + 1][j - 2] != "*")
-                                    matAdj.get(i * taulell.getColumnes() + j).add((i + 1) * taulell.getColumnes() + j - 2);
-                                if (i + 1 < taulell.getFiles() && j - 1 >= 0 && taulell.getmContingut()[i + 1][j - 1] != "#" && taulell.getmContingut()[i + 1][j - 1] != "*")
-                                    matAdj.get(i * taulell.getColumnes() + j).add((i + 1) * taulell.getColumnes() + j - 1);
-                                if (i + 1 < taulell.getFiles() && j + 1 < taulell.getColumnes() && taulell.getmContingut()[i + 1][j + 1] != "#" && taulell.getmContingut()[i + 1][j + 1] != "*")
-                                    matAdj.get(i * taulell.getColumnes() + j).add((i + 1) * taulell.getColumnes() + j + 1);
-                                if (i + 1 < taulell.getFiles() && j + 2 < taulell.getColumnes() && taulell.getmContingut()[i + 1][j + 2] != "#" && taulell.getmContingut()[i + 1][j + 2] != "*")
-                                    matAdj.get(i * taulell.getColumnes() + j).add((i + 1) * taulell.getColumnes() + j + 2);
-                            }
-                            else {
-                                if (i - 1 >= 0 && j - 2 >= 0 && taulell.getmContingut()[i - 1][j - 2] != "#" && taulell.getmContingut()[i - 1][j - 2] != "*")
-                                    matAdj.get(i * taulell.getColumnes() + j).add((i - 1) * taulell.getColumnes() + j - 2);
-                                if (i - 1 >= 0 && j - 1 >= 0 && taulell.getmContingut()[i - 1][j - 1] != "#" && taulell.getmContingut()[i - 1][j - 1] != "*")
-                                    matAdj.get(i * taulell.getColumnes() + j).add((i - 1) * taulell.getColumnes() + j - 1);
-                                if (i - 1 >= 0 && j + 1 < taulell.getColumnes() && taulell.getmContingut()[i - 1][j + 1] != "#" && taulell.getmContingut()[i - 1][j + 1] != "*")
-                                    matAdj.get(i * taulell.getColumnes() + j).add((i - 1) * taulell.getColumnes() + j + 1);
-                                if (i - 1 >= 0 && j + 2 < taulell.getColumnes() && taulell.getmContingut()[i - 1][j + 2] != "#" && taulell.getmContingut()[i - 1][j + 2] != "*")
-                                    matAdj.get(i * taulell.getColumnes() + j).add((i - 1) * taulell.getColumnes() + j + 2);
-                                if (j - 2 >= 0 && taulell.getmContingut()[i][j - 2] != "#" && taulell.getmContingut()[i][j - 2] != "*")
-                                    matAdj.get(i * taulell.getColumnes() + j).add(i * taulell.getColumnes() + j - 2);
-                                if (j + 2 < taulell.getColumnes() && taulell.getmContingut()[i][j + 2] != "#" && taulell.getmContingut()[i][j + 2] != "*")
-                                    matAdj.get(i * taulell.getColumnes() + j).add(i * taulell.getColumnes() + j + 2);
-                                if (i + 1 < taulell.getFiles() && j - 1 >= 0 && taulell.getmContingut()[i + 1][j - 1] != "#" && taulell.getmContingut()[i + 1][j - 1] != "*")
-                                    matAdj.get(i * taulell.getColumnes() + j).add((i + 1) * taulell.getColumnes() + j - 1);
-                                if (i + 1 < taulell.getFiles() && taulell.getmContingut()[i + 1][j] != "#" && taulell.getmContingut()[i + 1][j] != "*")
-                                    matAdj.get(i * taulell.getColumnes() + j).add((i + 1) * taulell.getColumnes() + j);
-                                if (i + 1 < taulell.getFiles() && j + 1 < taulell.getColumnes() && taulell.getmContingut()[i + 1][j + 1] != "#" && taulell.getmContingut()[i + 1][j + 1] != "*")
-                                    matAdj.get(i * taulell.getColumnes() + j).add((i + 1) * taulell.getColumnes() + j + 1);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+    abstract void generaMatAdj();
 
     /**
      * omple la matriu de contingut amb '*' a les coordenades indicades
      */
-    public void posarForats() {
+    public final void posarForats() {
         System.out.println("posar forats(*): coorX coordY ");
         System.out.println("per acabar: exit");
         Scanner teclado = new Scanner(System.in);
@@ -277,6 +203,20 @@ public class Hidato implements Serializable{
         }
     }
 
+    public void posarLliures() {
+        System.out.println("posar lliures(?): coorX coordY ");
+        System.out.println("per acabar: exit");
+        Scanner teclado = new Scanner(System.in);
+        String s = teclado.nextLine();
+        while (!s.equals("exit")) {
+            String[] h = s.split(" ");
+            int coordX =  Integer.parseInt(h[0]);
+            int coordY =  Integer.parseInt(h[1]);
+            mContingut[coordX][coordY] = "?";
+            s = teclado.nextLine();
+        }
+    }
+
     /**
      * posa un numero a les coordenades indicades
      */
@@ -290,11 +230,24 @@ public class Hidato implements Serializable{
             int coordX =  Integer.parseInt(h[0]);
             int coordY =  Integer.parseInt(h[1]);
             String num = h[2];
-            if (mContingut[coordX][coordY] != "#"){
+            boolean apareix = false;
+            int reemplazarX = 0;
+            int reemplazarY = 0;
+            for (int i = 0; i < taulell.getFiles() && !(apareix); i++){
+                for (int j = 0; j < taulell.getColumnes() && !(apareix); j++){
+                    if (mContingut[i][j].equals(num)){
+                        apareix = true;
+                        reemplazarX = i;
+                        reemplazarY = j;
+                    }
+                }
+            }
+            if (apareix){
                 mContingut[coordX][coordY] = num;
+                mContingut[reemplazarX][reemplazarY] = "?";
             }
             else {
-                System.out.println("No pots posar un numero en un forat!");
+                mContingut[coordX][coordY] = num;
             }
             s = teclado.nextLine();
         }
@@ -395,6 +348,7 @@ public class Hidato implements Serializable{
 
         mContingut[r][c] = ""+n;
 
+
         int t = mContingut[r].length;
         int pos = r*t + c;
 
@@ -449,5 +403,73 @@ public class Hidato implements Serializable{
             if(!b)return false;
         }
         return true;
+    }
+
+    public boolean comprovaNums(){
+        Integer max = -1;
+        Integer forats = 0;
+        for (int i = 0; i < taulell.getFiles(); i++){
+            for (int j = 0; j < taulell.getColumnes(); j++){
+                if (mContingut[i][j].equals("#") || mContingut[i][j].equals("*")){
+                    forats++;
+                }
+                else if (!(mContingut[i][j].equals("?"))){
+                    if (Integer.parseInt(mContingut[i][j]) > max){
+                        max = Integer.parseInt(mContingut[i][j]);
+                    }
+                }
+            }
+        }
+
+        if (taulell.getFiles()*taulell.getColumnes() - forats < max) return false;
+        else return true;
+
+    }
+
+
+    public void modifica(){
+        Scanner teclado = new Scanner(System.in);
+        String s = "";
+        while (!s.equals("0")){
+            System.out.println("OPCIONS:\n"
+                    + "0 --> Sortir\n"
+                    + "1 --> Posar forats\n"
+                    + "2 --> Posar lliures\n"
+                    + "3 --> Posar numeros\n");
+
+            s = teclado.nextLine();
+            switch(s){
+                case "0":
+                    break;
+                case "1":
+                    posarForats();
+                    break;
+                case "2":
+                    posarLliures();
+                    break;
+                case "3":
+                    posarNumeros();
+            }
+            boolean b = comprovaNums();
+            if (!b){
+                System.out.println("Hi ha masses forats! L'hidato no es pot resoldre");
+                System.out.println("Has de treure algun forat o canviar el major numero");
+            }
+            else {
+                String[][] mContingutAux = new String[taulell.getFiles()][taulell.getColumnes()];
+                for (int i=0; i<taulell.getFiles(); i++){
+                    for (int j=0; j<taulell.getColumnes(); j++){
+                        mContingutAux[i][j] = this.mContingut[i][j];
+                    }
+                }
+
+                b = resol();
+                if (!b){
+                    System.out.println("L'hidato que has fet no es pot resoldre");
+                    this.mContingut = mContingutAux;
+                }
+                this.mContingut = mContingutAux;
+            }
+        }
     }
 }
