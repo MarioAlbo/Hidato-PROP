@@ -1,9 +1,9 @@
+package prop;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Iterator;
-import java.io.Serializable;
 
-public class Conj_partida implements Serializable{
+public class Conj_partida {
     Map<Integer,Partida> partides_guardades = new HashMap<>();
 
     /**
@@ -11,7 +11,7 @@ public class Conj_partida implements Serializable{
      * @param p: partida que es guardarà com a value
      */
     public void guardar_partida(Partida p) {
-           partides_guardades.put(p.getIdP(), p);
+        partides_guardades.put(p.getIdP(), p);
     }
 
     /**
@@ -20,7 +20,7 @@ public class Conj_partida implements Serializable{
      * @return: retorn de la partida amb key = idp
      */
     public Partida cargar_partida(int idp) {
-            return partides_guardades.get(idp);
+        return partides_guardades.get(idp);
     }
 
     /**
