@@ -13,6 +13,7 @@ public class Partida {
 
     /**
      * Dona el atribut idP
+     * @return
      * @return: retorna el valor del atribut idP de la instacia de partida
      */
     public int getIdP() {
@@ -21,6 +22,7 @@ public class Partida {
 
     /**
      * Dona el atribut idplayer
+     * @return
      * @return: retorna el id del jugar de la partida
      */
     public String getIdplayer() {
@@ -29,6 +31,7 @@ public class Partida {
 
     /**
      * dona el temps de la partida
+     * @return
      * @return: retorna el temps de joc de la partida
      */
     public int getTemps() {
@@ -37,6 +40,7 @@ public class Partida {
 
     /**
      * retorna el valoor booleà del estat de la partida
+     * @return
      * @return: retorna l'atribut getAcabat
      */
     public static boolean getAcabat() {
@@ -116,10 +120,7 @@ public class Partida {
      */
     public void resol_hidato(){
         if(!hidato.resol())System.out.println("No es pot resoldre");
-        else {
-            hidato.imprimirMContingut();
-            acabar();
-        }
+        else hidato.imprimirMContingut();
     }
 
     /**

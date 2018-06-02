@@ -2,7 +2,7 @@ import java.util.*;
 
 
 public class Main {
-public static Conj_partida repositori_partides = new Conj_partida();
+    public static Conj_partida repositori_partides = new Conj_partida();
     private static void menuPartida(Partida p){
         String s = "";
         while(!s.equals("0")){
@@ -51,7 +51,9 @@ public static Conj_partida repositori_partides = new Conj_partida();
 
     public static void main(String[] args){
         Map<String,Taulell> Taulells = new HashMap<>();
-        Map<Integer,Hidato> Hidatos = new HashMap<>();
+        Map<Integer,HidatoQ> HidatosQ = new HashMap<>();
+        Map<Integer,HidatoH> HidatosH = new HashMap<>();
+        Map<Integer,HidatoT> HidatosT = new HashMap<>();
         Map<Integer,Partida> Partidas = new HashMap<>();
         Map<String, Usuari> jugadors = new HashMap<>();
         Integer idHidato = 0;
@@ -88,45 +90,144 @@ public static Conj_partida repositori_partides = new Conj_partida();
                 case "2":
                     System.out.println("id Hidato: " + ++idHidato);
                     Taulell t = new Taulell();
-                    Hidato hM = new Hidato(idHidato,nombre,t);
-                    Hidatos.put(idHidato,hM);
+                    if (t.getTcela().equals("Q")){
+                        HidatoQ hM;
+                        hM = new HidatoQ(idHidato,nombre,t);
+                        HidatosQ.put(idHidato,hM);
+                    }
+                    else if (t.getTcela().equals("H")){
+                        HidatoH hM;
+                        hM = new HidatoH(idHidato,nombre,t);
+                        HidatosH.put(idHidato,hM);
+                    }
+                    else { //if (t.getTcela().equals("T"))
+                        HidatoT hM;
+                        hM = new HidatoT(idHidato,nombre,t);
+                        HidatosT.put(idHidato,hM);
+                    }
                     break;
                 case "3":
-                    System.out.print("dificultat [1..3]:");
+
+                    System.out.print("dificultat [1..9]:");
                     Integer dificultat = Integer.parseInt(teclado.nextLine());
-                    Hidato hA = new Hidato(++idHidato,nombre,dificultat);
-                    Hidatos.put(idHidato,hA);
-                    System.out.println("Hidato creat amb id: " + idHidato);
+                    switch (dificultat%3) {
+                        case 1:
+                            HidatoQ hAQ = new HidatoQ(++idHidato,nombre,dificultat);
+                            HidatosQ.put(idHidato,hAQ);
+                            System.out.println("Hidato creat amb id: " + idHidato);
+                            break;
+                        case 2:
+                            HidatoH hAH = new HidatoH(++idHidato,nombre,dificultat);
+                            HidatosH.put(idHidato,hAH);
+                            System.out.println("Hidato creat amb id: " + idHidato);
+
+                            break;
+                        case 0:
+                            HidatoT hAT = new HidatoT(++idHidato,nombre,dificultat);
+                            HidatosT.put(idHidato,hAT);
+                            System.out.println("Hidato creat amb id: " + idHidato);
+                            break;
+                        default:
+                            break;
+                    }
                     break;
                 case "4":
-                    System.out.print("id Hidato:");
-                    int idH = Integer.parseInt(teclado.nextLine());
-                    if (Hidatos.containsKey(idH)) {
-                        Hidato hidato = Hidatos.get(idH);
-                        hidato.posarForats();
-                        hidato.posarNumeros();
-                        hidato.imprimirMContingut();
-                        Hidatos.put(idH, hidato);
-                    } else System.out.println("L'hidato " + idH + " no "
-                            + "exsisteix");
+
+                    if (HidatosQ.size() == 0 && HidatosH.size() == 0 && HidatosT.size() == 0){
+                        System.out.println("encara no hi ha cap hidato");
+                    }
+                    else {
+                        System.out.println("id hidatos: ");
+                        System.out.println("quadrats: ");
+                        for (Integer key : HidatosQ.keySet()) {
+                            System.out.print(key + " ");
+                        }
+                        System.out.println();
+                        System.out.println("hexagonals: ");
+                        for (Integer key : HidatosH.keySet()) {
+                            System.out.print(key + " ");
+                        }
+                        System.out.println();
+                        System.out.println("triangulars: ");
+                        for (Integer key : HidatosT.keySet()) {
+                            System.out.print(key + " ");
+                        }
+                        System.out.println();
+                        System.out.print("veure Hidato amb id: ");
+                        boolean trobat = false;
+                        int idHida = Integer.parseInt(teclado.nextLine());
+                        if (HidatosQ.containsKey(idHida)) {
+                            HidatoQ hidato = HidatosQ.get(idHida);
+                            hidato.modifica();
+                            hidato.imprimirMContingut();
+                            HidatosQ.put(idHida, hidato);
+                            trobat = true;
+                        }
+                        if (!trobat){
+                            if (HidatosH.containsKey(idHida)) {
+                                HidatoH hidato = HidatosH.get(idHida);
+                                hidato.modifica();
+                                hidato.imprimirMContingut();
+                                HidatosH.put(idHida, hidato);
+                                trobat = true;
+                            }
+                        }
+                        if (!trobat){
+                            for (Integer key : HidatosT.keySet()) {
+                                if (idHida == key){
+                                    HidatosT.get(idHida).modifica();
+                                    HidatosT.get(idHida).imprimirMContingut();
+                                    trobat = true;
+                                }
+                            }
+                        }
+                        if (!trobat) System.out.println("L'hidato " + idHida + " no "
+                                + "exsisteix");
+                    }
                     break;
                 case "5":
-                    if (Hidatos.size() > 0) {
+                    if (HidatosQ.size() > 0 || HidatosH.size() > 0 || HidatosT.size() > 0){
                         System.out.print("nickname:");
                         nick = teclado.nextLine();
                         if (jugadors.containsKey(nick)) {
                             System.out.print("Seleciona hidato: \n");
-                            for (Integer key : Hidatos.keySet()) {
+                            System.out.print("quadrats: ");
+                            for (Integer key : HidatosQ.keySet()) {
                                 System.out.print(key + " ");
                             }
                             System.out.println();
-                            idH = Integer.parseInt(teclado.nextLine());
-                           // Hidatos.get(idH).imprimirMContingut();
-                            Partida partida = new Partida(Partidas.size(), nick,
-                                    Hidatos.get(idH));
-                            partida.getHidato().imprimirMContingut();
-                            menuPartida(partida);
-                            Partidas.put(Partidas.size(), partida);
+                            System.out.print("hexagonals: ");
+                            for (Integer key : HidatosH.keySet()) {
+                                System.out.print(key + " ");
+                            }
+                            System.out.println();
+                            System.out.print("triangulars: ");
+                            for (Integer key : HidatosT.keySet()) {
+                                System.out.print(key + " ");
+                            }
+                            System.out.println();
+                            int idHida = Integer.parseInt(teclado.nextLine());
+                            if (HidatosQ.containsKey(idHida)) {
+                                HidatoQ hidato = HidatosQ.get(idHida);
+                                Partida partida = new Partida(Partidas.size(), nick, hidato);
+                                partida.getHidato().imprimirMContingut();
+                                menuPartida(partida);
+                                Partidas.put(Partidas.size(), partida);
+                            }
+                            if (HidatosH.containsKey(idHida)) {
+                                HidatoH hidato = HidatosH.get(idHida);
+                                Partida partida = new Partida(Partidas.size(), nick, hidato);
+                                partida.getHidato().imprimirMContingut();
+                                menuPartida(partida);
+                                Partidas.put(Partidas.size(), partida);
+                            }
+                            if (HidatosT.containsKey(idHida)) {
+                                HidatoT hidato = HidatosT.get(idHida);
+                                Partida partida = new Partida(Partidas.size(), nick, hidato);
+                                partida.getHidato().imprimirMContingut();
+                                menuPartida(partida);
+                                Partidas.put(Partidas.size(), partida);
+                            }
                         }
                         else System.out.println("No existeix l'usuari amb nick " + nick);
                     }
@@ -154,7 +255,7 @@ public static Conj_partida repositori_partides = new Conj_partida();
                                 + "exsisteix");
                     } else System.out.println("Crea un Taulell abans");
                     break;
-                case "8":
+                case "8": /*
                     if (Taulells.size() > 0) {
                         System.out.print("nom del creador del hidato:");
                         nick = teclado.nextLine();
@@ -167,20 +268,54 @@ public static Conj_partida repositori_partides = new Conj_partida();
                         } else System.out.println("Taulell " + name +" no "
                                 + "exsisteix");
                     } else System.out.println("Crea un Taulell abans");
-                    break;
+                  */  break;
                 case "9":
-                    if (Hidatos.size() == 0){
+                    if (HidatosQ.size() == 0 && HidatosH.size() == 0 && HidatosT.size() == 0){
                         System.out.println("encara no hi ha cap hidato");
                     }
                     else {
-                        System.out.print("id hidatos: ");
-                        for (Integer key : Hidatos.keySet()) {
+                        System.out.println("id hidatos: ");
+                        System.out.print("quadrats: ");
+                        for (Integer key : HidatosQ.keySet()) {
+                            System.out.print(key + " ");
+                        }
+                        System.out.println();
+                        System.out.print("hexagonals: ");
+                        for (Integer key : HidatosH.keySet()) {
+                            System.out.print(key + " ");
+                        }
+                        System.out.println();
+                        System.out.print("triangulars: ");
+                        for (Integer key : HidatosT.keySet()) {
                             System.out.print(key + " ");
                         }
                         System.out.println();
                         System.out.print("veure Hidato amb id: ");
                         int idHida = Integer.parseInt(teclado.nextLine());
-                        Hidatos.get(idHida).imprimirMContingut();
+                        boolean trobat = false;
+                        for (Integer key : HidatosQ.keySet()) {
+                            if (idHida == key){
+                                HidatosQ.get(idHida).imprimirMContingut();
+                                trobat = true;
+                            }
+                        }
+                        if (!trobat){
+                            for (Integer key : HidatosH.keySet()) {
+                                if (idHida == key){
+                                    HidatosH.get(idHida).imprimirMContingut();
+                                    trobat = true;
+                                }
+                            }
+                            if (!trobat){
+                                for (Integer key : HidatosT.keySet()) {
+                                    if (idHida == key){
+                                        HidatosT.get(idHida).imprimirMContingut();
+                                        trobat = true;
+                                    }
+                                }
+                            }
+                        }
+
                     }
                     break;
                 case "10":
