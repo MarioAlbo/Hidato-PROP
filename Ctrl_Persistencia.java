@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.ObjectInputStream;
 
 public class Ctrl_Persistencia {
     String path_CP = "C:\\Users\\Mario\\IdeaProjects\\prova\\src\\Persistencia\\fichero_CP";

@@ -1,6 +1,12 @@
 import java.io.*;
 
 public class PersistenciaHidato {
+
+    /**
+     * Guarda en el File file el contenido de Hidato h serializado
+     * @param h Hidato que serà serializado y guardado en el File file
+     * @param file File que contendrá el contenido de Hidato h
+     */
     public void guardar_H(Hidato h, File file) {
         ObjectOutputStream oos;
         try {
@@ -11,6 +17,11 @@ public class PersistenciaHidato {
         catch (IOException e) {}
     }
 
+    /**
+     * Devuelve el Hidato guardado guardado en el File file, si este existe
+     * @param file File el cual contiene el Hidato serializado
+     * @return devuelve el Hidato guardado en el File file
+     */
     public Hidato cargar_H(File file) {
         ObjectInputStream ois;
         Hidato h = null;
@@ -30,8 +41,11 @@ public class PersistenciaHidato {
         return h;
     }
 
+    /**
+     * Borrar el File file si este existe de la carpeta Persistencia
+     * @param file File que será borrado si existe
+     */
     public void borrar_hidato(File file) {
-        if (file.delete()) System.out.println("Hidato borrat correctament");
-        else System.out.println("El Hidato no estava guardat");
+        file.delete();
     }
 }

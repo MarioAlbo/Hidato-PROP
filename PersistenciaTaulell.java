@@ -1,6 +1,12 @@
 import java.io.*;
 
 public class PersistenciaTaulell {
+
+    /**
+     * Guarda en el File file el contenido de Taulell t serializado
+     * @param t Taulell que será guardado en el File file
+     * @param file File que contendrá el valor de Taulell t serializado
+     */
     public void guardar_T (Taulell t, File file) {
         ObjectOutputStream oos;
         try {
@@ -11,6 +17,11 @@ public class PersistenciaTaulell {
         catch (IOException e) {}
     }
 
+    /**
+     * Devuelve el Tablero guardado guardado en el File file, si este existe
+     * @param file File el cual contiene el Taulell serializado
+     * @return devuelve el Taulell guardado en el File file
+     */
     public Taulell cargar_T (File file) {
         ObjectInputStream ois;
         Taulell t = null;
@@ -30,8 +41,11 @@ public class PersistenciaTaulell {
         return t;
     }
 
+    /**
+     * Borrar el File file si este existe de la carpeta Persistencia
+     * @param file File que será borrado si existe
+     */
     public void borrar_taulell(File file) {
-        if (file.delete()) System.out.println("Taulell borrat correctament");
-        else System.out.println("El Taulell no estava guardat");
+        file.delete();
     }
 }

@@ -1,6 +1,12 @@
 import java.io.*;
 
 public class PersistenciaUsuari {
+
+    /**
+     * en el File file el contenido de Usuari u serializado
+     * @param u Usuari que será guardado en el File file
+     * @param file File que contendrá el valor de Usuari u serializado
+     */
     public void guardar_U(Usuari u, File file) {
         ObjectOutputStream oos;
         try {
@@ -10,6 +16,12 @@ public class PersistenciaUsuari {
         }
         catch (IOException e) {}
     }
+
+    /**
+     * Devuelve el Usuari guardado guardado en el File file, si este existe
+     * @param file File el cual contiene el Usuari serializado
+     * @return devuelve el Usuari guardado en el File file
+     */
     public Usuari cargar_U(File file) {
         ObjectInputStream ois;
         Usuari u = null;
