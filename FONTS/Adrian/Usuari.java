@@ -1,6 +1,6 @@
 import java.io.Serializable;
 
-public class Usuari implements Serializable{
+public class Usuari implements Serializable {
     private String nikname;
     private String psw;
 
@@ -26,7 +26,6 @@ public class Usuari implements Serializable{
      * @param contrasenya: psw de l'objecte usuari
      */
     public Usuari(String nom, String contrasenya){
-        System.out.println("Nuevo usuario: "+nom+" "+contrasenya);
         nikname = nom;
         psw = contrasenya;
     }
