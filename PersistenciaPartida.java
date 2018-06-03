@@ -7,7 +7,7 @@ public class PersistenciaPartida {
      * @param cp objecto Conj_partida que se guardará en el File file
      * @param file File que tendrá como contenido Conj_partida cp serializado
      */
-   public void guardar_CP(Conj_partida cp, File file) {
+   public void guardar_CP(String cp, File file) {
        ObjectOutputStream oos;
        try {
            oos = new ObjectOutputStream(new FileOutputStream(file));
@@ -22,12 +22,12 @@ public class PersistenciaPartida {
      * @param file File File que buscará para cargar Conj_partida
      * @return valor que contine File file si este existe
      */
-   public Conj_partida cargar_CP(File file) {
+   public String cargar_CP(File file) {
        ObjectInputStream ois;
-       Conj_partida cp = null;
+       String cp = null;
        try {
            ois = new ObjectInputStream(new FileInputStream(file));
-           cp =  (Conj_partida)ois.readObject();
+           cp =  (String) ois.readObject();
            ois.close();
           return cp;
        }

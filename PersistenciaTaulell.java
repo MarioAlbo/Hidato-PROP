@@ -7,7 +7,7 @@ public class PersistenciaTaulell {
      * @param t Taulell que será guardado en el File file
      * @param file File que contendrá el valor de Taulell t serializado
      */
-    public void guardar_T (Taulell t, File file) {
+    public void guardar_T (String t, File file) {
         ObjectOutputStream oos;
         try {
             oos = new ObjectOutputStream(new FileOutputStream(file));
@@ -22,16 +22,16 @@ public class PersistenciaTaulell {
      * @param file File el cual contiene el Taulell serializado
      * @return devuelve el Taulell guardado en el File file
      */
-    public Taulell cargar_T (File file) {
+    public String cargar_T (File file) {
         ObjectInputStream ois;
-        Taulell t = null;
+        String t = null;
         try {
             ois = new ObjectInputStream(new FileInputStream(file));
-            t = (Taulell) ois.readObject();
+            t = (String) ois.readObject();
             ois.close();
             return t;
         } catch (FileNotFoundException e) {
-            Taulell err = null;
+            String err = null;
             return err;
         } catch (IOException e) {
             e.printStackTrace();

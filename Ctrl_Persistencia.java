@@ -1,67 +1,77 @@
+import com.google.gson.Gson;
 import java.io.File;
-import java.io.ObjectInputStream;
+
 
 public class Ctrl_Persistencia {
-    String path_CP = "C:\\Users\\Mario\\IdeaProjects\\prova\\src\\Persistencia\\fichero_CP";
-    PersistenciaPartida pp = new PersistenciaPartida();
+    private String path_CP = "C:\\Users\\Mario\\IdeaProjects\\prova\\src\\Persistencia\\fichero_CP";
+    private PersistenciaPartida pp;
 
-    String path_usuario = "C:\\Users\\Mario\\IdeaProjects\\prova\\src\\Persistencia\\fichero_usuario_";
-    PersistenciaUsuari pu = new PersistenciaUsuari();
+    private String path_usuario = "C:\\Users\\Mario\\IdeaProjects\\prova\\src\\Persistencia\\fichero_usuario_";
+    private PersistenciaUsuari pu;
 
-    String path_hidato = "C:\\Users\\Mario\\IdeaProjects\\prova\\src\\Persistencia\\fichero_hidato_";
-    PersistenciaHidato ph = new PersistenciaHidato();
+    private String path_hidato = "C:\\Users\\Mario\\IdeaProjects\\prova\\src\\Persistencia\\fichero_hidato_";
+    private PersistenciaHidato ph;
 
-    String path_taulell = "C:\\Users\\Mario\\IdeaProjects\\prova\\src\\Persistencia\\fichero_taulell_";
-    PersistenciaTaulell pt = new PersistenciaTaulell();
+    private String path_taulell = "C:\\Users\\Mario\\IdeaProjects\\prova\\src\\Persistencia\\fichero_taulell_";
+    private PersistenciaTaulell pt;
 
-    public void guardar_CP(Conj_partida cp) {
+    public void guardar_CP(String cp) {
+        pp = new PersistenciaPartida();
         File conj_partides_fitxer = new File(path_CP);
         pp.guardar_CP(cp, conj_partides_fitxer);
     }
 
-    public Conj_partida cargar_CP() {
+    public String cargar_CP() {
+        pp = new PersistenciaPartida();
         File conj_partides_fitxer = new File(path_CP);
         return pp.cargar_CP(conj_partides_fitxer);
     }
 
-    public void guardar_usuari(Usuari u) {
-        File usuari_fitxer = new File (path_usuario + u.getnikname());
-        pu.guardar_U(u,usuari_fitxer);
+    public void guardar_usuari(String u, String path) {
+        pu = new PersistenciaUsuari();
+        File usuari_fitxer = new File(path_usuario + path);
+        pu.guardar_U(u, usuari_fitxer);
     }
 
-    public Usuari cargar_usuari(String s) {
-        File usuari_fitxer = new File (path_usuario + s);
-        Usuari usuari = pu.cargar_U(usuari_fitxer);
-        return usuari;
+    public String cargar_usuari(String s) {
+        pu = new PersistenciaUsuari();
+        File usuari_fitxer = new File(path_usuario + s);
+        return pu.cargar_U(usuari_fitxer);
     }
 
-    public void guardar_hidato(Hidato h) {
-        File hidato_fitxer = new File(path_hidato + h.getIdH());
+    public void guardar_hidato(String h, Integer path) {
+        ph = new PersistenciaHidato();
+        File hidato_fitxer = new File(path_hidato + path);
         ph.guardar_H(h, hidato_fitxer);
     }
 
-    public Hidato cargar_hidato(String idH) {
+    public String cargar_hidato(Integer idH) {
+        ph = new PersistenciaHidato();
         File hidato_fitxer = new File(path_hidato + idH);
         return ph.cargar_H(hidato_fitxer);
     }
 
-    public void borrar_hidato(Hidato h) {
-        File file_hidato = new File(path_hidato + h.getIdH());
+    public void borrar_hidato(Integer path) {
+        ph = new PersistenciaHidato();
+        File file_hidato = new File(path_hidato + path);
         ph.borrar_hidato(file_hidato);
     }
 
-    public void guardar_taulell (Taulell t) {
-        File taulell_fitxer = new File(path_taulell + t.getTcela() + "," + t.getTadjacecnia() + "," + t.getFiles() + "," + t.getColumnes());
+    public void guardar_taulell(String t, Integer idt) {
+        pt = new PersistenciaTaulell();
+        File taulell_fitxer = new File(path_taulell + idt);
         pt.guardar_T(t, taulell_fitxer);
     }
 
-    public Taulell cargar_taulell(String t) {
-        File taulell_fitxer = new File(path_taulell + t);
+    public String cargar_taulell(Integer idt) {
+        pt = new PersistenciaTaulell();
+        File taulell_fitxer = new File(path_taulell + idt);
         return pt.cargar_T(taulell_fitxer);
     }
 
-    public void borrar_taulell(Taulell t) {
-        File file_taulell = new File(path_taulell +  t.getTcela() + "," + t.getTadjacecnia() + "," + t.getFiles() + "," + t.getColumnes());
+    public void borrar_taulell(Integer idt) {
+        pt = new PersistenciaTaulell();
+        File file_taulell = new File(path_taulell + idt);
         pt.borrar_taulell(file_taulell);
     }
 }

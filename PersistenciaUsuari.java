@@ -1,3 +1,5 @@
+import com.google.gson.Gson;
+import jdk.nashorn.internal.runtime.JSONFunctions;
 import java.io.*;
 
 public class PersistenciaUsuari {
@@ -7,7 +9,7 @@ public class PersistenciaUsuari {
      * @param u Usuari que será guardado en el File file
      * @param file File que contendrá el valor de Usuari u serializado
      */
-    public void guardar_U(Usuari u, File file) {
+    public void guardar_U(String u, File file) {
         ObjectOutputStream oos;
         try {
             oos = new ObjectOutputStream(new FileOutputStream(file));
@@ -22,16 +24,16 @@ public class PersistenciaUsuari {
      * @param file File el cual contiene el Usuari serializado
      * @return devuelve el Usuari guardado en el File file
      */
-    public Usuari cargar_U(File file) {
+    public String cargar_U(File file) {
         ObjectInputStream ois;
-        Usuari u = null;
+        String u = null;
         try {
             ois = new ObjectInputStream(new FileInputStream(file));
-            u = (Usuari) ois.readObject();
+            u = (String) ois.readObject();
             ois.close();
             return u;
         } catch (FileNotFoundException e) {
-            Usuari err = null;
+            String err = null;
             return err;
         } catch (IOException e) {
             e.printStackTrace();

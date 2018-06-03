@@ -7,7 +7,7 @@ public class PersistenciaHidato {
      * @param h Hidato que serà serializado y guardado en el File file
      * @param file File que contendrá el contenido de Hidato h
      */
-    public void guardar_H(Hidato h, File file) {
+    public void guardar_H(String h, File file) {
         ObjectOutputStream oos;
         try {
             oos = new ObjectOutputStream(new FileOutputStream(file));
@@ -22,16 +22,16 @@ public class PersistenciaHidato {
      * @param file File el cual contiene el Hidato serializado
      * @return devuelve el Hidato guardado en el File file
      */
-    public Hidato cargar_H(File file) {
+    public String cargar_H(File file) {
         ObjectInputStream ois;
-        Hidato h = null;
+        String h = null;
         try {
             ois = new ObjectInputStream(new FileInputStream(file));
-            h = (Hidato) ois.readObject();
+            h = (String) ois.readObject();
             ois.close();
             return h;
         } catch (FileNotFoundException e) {
-            Hidato err = null;
+            String err = null;
             return err;
         } catch (IOException e) {
             e.printStackTrace();
