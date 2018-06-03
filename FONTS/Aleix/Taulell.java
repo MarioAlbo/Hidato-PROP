@@ -4,11 +4,27 @@ import java.io.Serializable;
 
 public class Taulell implements Serializable {
 
-    private static String Tcela;
-    private static String Tadjacecnia;
-    private static int files;
-    private static int columnes;
-    private static String[][] mContingut;
+    private Integer idT;
+    private String Tcela;
+    private String Tadjacecnia;
+    private Integer files;
+    private Integer columnes;
+    private String[][] mContingut;
+
+    public Taulell() {
+        this.idT = -1;
+        this.Tcela = null;
+        this.Tadjacecnia = null;
+        this.files = -1;
+        this.columnes = 1;
+        this.mContingut = new String[1][1];
+    }
+
+    /**
+     * Dona el valor del atribut idT
+     * @return retorna el identificador del Taulell
+     */
+    public Integer getIdT() {return idT;}
 
     /**
      * Dona el valor del atribut Tcela
@@ -71,16 +87,21 @@ public class Taulell implements Serializable {
     /**
      * Creua una nova instancia de la classe Taulell a la qual s'introdueixen les caractesistiques per manualment
      */
-    public Taulell() {
-        System.out.println("llegint taulell: (Tc,Ta,X,Y)");
-        Scanner teclado = new Scanner(System.in);
-        String s = teclado.nextLine();
-        String[] h = s.split(",");
-        Tcela = h[0];
-        Tadjacecnia = h[1];
-        files = Integer.parseInt(h[2]);
-        columnes = Integer.parseInt(h[3]);
-        mContingut = new String[files][columnes];
+    public Taulell(Integer idT, String Tcela, String Tadj, int column, int files) {
+        //System.out.println("llegint taulell: (Tc,Ta,X,Y)");
+        //Scanner teclado = new Scanner(System.in);
+        //String s = teclado.nextLine();
+        //String[] h = s.split(",");
+        this.idT = idT;
+        this.Tcela = Tcela;
+        this.Tadjacecnia = Tadj;
+        this.files = files;
+        this.columnes = column;
+        /*this.Tcela = h[0];
+        this.Tadjacecnia = h[1];
+        this.files = Integer.parseInt(h[2]);
+        this.columnes = Integer.parseInt(h[3]);*/
+        this.mContingut = new String[files][columnes];
         for (int i = 0; i < files; i++) {
             for (int j = 0; j < columnes; j++) {
                 mContingut[i][j] = "?";
@@ -122,10 +143,10 @@ public class Taulell implements Serializable {
         }
     }
 
-    /**
+   /* /**
      * Mostra per pantalla la matriu de contingut del Taulell
      */
-    public void imprimirMContingut(){
+/*    public void imprimirMContingut(){
         System.out.print(Tcela + "," + Tadjacecnia + "," + files + "," + columnes);
         System.out.println();
         for (int i = 0; i < mContingut.length; i++){
@@ -139,5 +160,5 @@ public class Taulell implements Serializable {
             }
             System.out.println();
         }
-    }
+    } */
 }
