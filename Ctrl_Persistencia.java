@@ -1,38 +1,37 @@
-import com.google.gson.Gson;
 import java.io.File;
 
 
 public class Ctrl_Persistencia {
-    private String path_CP = "C:\\Users\\Mario\\IdeaProjects\\prova\\src\\Persistencia\\fichero_CP";
+    private String path_partida = ".\\prova\\src\\Persistencia\\fichero_partida_";
     private PersistenciaPartida pp;
 
-    private String path_usuario = "C:\\Users\\Mario\\IdeaProjects\\prova\\src\\Persistencia\\fichero_usuario_";
+    private String path_usuario = ".\\src\\Persistencia\\fichero_usuario_";
     private PersistenciaUsuari pu;
 
-    private String path_hidato = "C:\\Users\\Mario\\IdeaProjects\\prova\\src\\Persistencia\\fichero_hidato_";
+    private String path_hidato = ".\\src\\Persistencia\\fichero_hidato_";
     private PersistenciaHidato ph;
 
-    private String path_taulell = "C:\\Users\\Mario\\IdeaProjects\\prova\\src\\Persistencia\\fichero_taulell_";
+    private String path_taulell = ".\\src\\Persistencia\\fichero_taulell_";
     private PersistenciaTaulell pt;
 
     /**
      * Recibe un objecto Conj_partida en forma de String para que Persistencia_partida lo guarde en un fichero
-     * @param cp objecto Conj_partida convertido a String
+     * @param p objecto Conj_partida convertido a String
      */
-    public void guardar_CP(String cp) {
+    public void guardar_partida(String p, Integer idp) {
         pp = new PersistenciaPartida();
-        File conj_partides_fitxer = new File(path_CP);
-        pp.guardar_CP(cp, conj_partides_fitxer);
+        File partida_fitxer = new File(path_partida + idp);
+        pp.guardar_partida(p, partida_fitxer);
     }
 
     /**
      * Recibe un String que corresponde al objecto de la clase Conj_partides y lo envia a Ctrl_Domini
      * @return devuelve el objeto de Conj_partida en forma de string a la capa de Domini
      */
-    public String cargar_CP() {
+    public String cargar_partida(Integer idp) {
         pp = new PersistenciaPartida();
-        File conj_partides_fitxer = new File(path_CP);
-        return pp.cargar_CP(conj_partides_fitxer);
+        File partida_fitxer = new File(path_partida + idp);
+        return pp.cargar_partida(partida_fitxer);
     }
 
     /**

@@ -1,5 +1,3 @@
-import com.google.gson.Gson;
-import jdk.nashorn.internal.runtime.JSONFunctions;
 import java.io.*;
 
 public class PersistenciaUsuari {
@@ -31,10 +29,8 @@ public class PersistenciaUsuari {
             ois = new ObjectInputStream(new FileInputStream(file));
             u = (String) ois.readObject();
             ois.close();
-            return u;
         } catch (FileNotFoundException e) {
-            String err = null;
-            return err;
+            return null;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
