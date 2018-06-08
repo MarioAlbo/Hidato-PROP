@@ -2,25 +2,27 @@ import java.io.File;
 
 
 public class Ctrl_Persistencia {
-    private String path_partida = ".\\prova\\src\\Persistencia\\fichero_partida_";
+    private String path_partida = ".\\prova\\src\\Persistencia\\fichero_partida";
     private PersistenciaPartida pp;
 
-    private String path_usuario = ".\\src\\Persistencia\\fichero_usuario_";
+    private String path_usuario = ".\\src\\Persistencia\\fichero_usuario";
     private PersistenciaUsuari pu;
 
-    private String path_hidato = ".\\src\\Persistencia\\fichero_hidato_";
+    private String path_hidatoT = ".\\src\\Persistencia\\fichero_hidatoT";
+    private String path_hidatoQ = ".\\src\\Persistencia\\fichero_hidatoQ";
+    private String path_hidatoH = ".\\src\\Persistencia\\fichero_hidatoH";
     private PersistenciaHidato ph;
 
-    private String path_taulell = ".\\src\\Persistencia\\fichero_taulell_";
+    private String path_taulell = ".\\src\\Persistencia\\fichero_taulell";
     private PersistenciaTaulell pt;
 
     /**
      * Recibe un objecto Conj_partida en forma de String para que Persistencia_partida lo guarde en un fichero
      * @param p objecto Conj_partida convertido a String
      */
-    public void guardar_partida(String p, Integer idp) {
+    public void guardar_partida(String p) {
         pp = new PersistenciaPartida();
-        File partida_fitxer = new File(path_partida + idp);
+        File partida_fitxer = new File(path_partida);
         pp.guardar_partida(p, partida_fitxer);
     }
 
@@ -28,95 +30,109 @@ public class Ctrl_Persistencia {
      * Recibe un String que corresponde al objecto de la clase Conj_partides y lo envia a Ctrl_Domini
      * @return devuelve el objeto de Conj_partida en forma de string a la capa de Domini
      */
-    public String cargar_partida(Integer idp) {
+    public String cargar_partida() {
         pp = new PersistenciaPartida();
-        File partida_fitxer = new File(path_partida + idp);
+        File partida_fitxer = new File(path_partida);
         return pp.cargar_partida(partida_fitxer);
     }
 
     /**
      * Recibe un objecto Usuari en forma de String para que Persistencia_partida lo guarde en un fichero
      * @param u objecto Usuari en forma de String
-     * @param path nickname del usuario para añadir al nombre del fichero que guarde String u
      */
-    public void guardar_usuari(String u, String path) {
+    public void guardar_usuari(String u) {
         pu = new PersistenciaUsuari();
-        File usuari_fitxer = new File(path_usuario + path);
+        File usuari_fitxer = new File(path_usuario);
         pu.guardar_U(u, usuari_fitxer);
     }
 
     /**
      * Recibe un String que corresponde al objecto de la clase Usuari y lo envia a Ctrl_Domini
-     * @param s nickname del usuario que lo identifica para cargarlo
      * @return devuelve un String que corresponde al objecto Usuario identificado por String s
      */
-    public String cargar_usuari(String s) {
+    public String cargar_usuari() {
         pu = new PersistenciaUsuari();
-        File usuari_fitxer = new File(path_usuario + s);
+        File usuari_fitxer = new File(path_usuario);
         return pu.cargar_U(usuari_fitxer);
     }
 
     /**
      * recibe un String y lo envia a PersistenciaHidato para que guarde este en un fichero
      * @param h objecto Hidato convertido a String
-     * @param path Integer que se añadirá al final del fichero ppara identificar que pertenece al objecto h
      */
-    public void guardar_hidato(String h, Integer path) {
+    public void guardar_hidatoT(String h) {
         ph = new PersistenciaHidato();
-        File hidato_fitxer = new File(path_hidato + path);
+        File hidato_fitxer = new File(path_hidatoT);
         ph.guardar_H(h, hidato_fitxer);
     }
 
     /**
      * devuelve a la capa de Domini en forma de String un objecto de la clase Hidato
-     * @param idH Identificador del Hidato
      * @return devuelve un String que corresponde a un objecto de la clase Hidato
      */
-    public String cargar_hidato(Integer idH) {
+    public String cargar_hidatoT() {
         ph = new PersistenciaHidato();
-        File hidato_fitxer = new File(path_hidato + idH);
+        File hidato_fitxer = new File(path_hidatoT);
         return ph.cargar_H(hidato_fitxer);
     }
 
     /**
-     * elimina de la capa de persistencia el Hidato identificado por path
-     * @param path Identificador del Hidato a borrar
+     * recibe un String y lo envia a PersistenciaHidato para que guarde este en un fichero
+     * @param h objecto Hidato convertido a String
      */
-    public void borrar_hidato(Integer path) {
+    public void guardar_hidatoQ(String h) {
         ph = new PersistenciaHidato();
-        File file_hidato = new File(path_hidato + path);
-        ph.borrar_hidato(file_hidato);
+        File hidato_fitxer = new File(path_hidatoQ);
+        ph.guardar_H(h, hidato_fitxer);
+    }
+
+    /**
+     * devuelve a la capa de Domini en forma de String un objecto de la clase Hidato
+     * @return devuelve un String que corresponde a un objecto de la clase Hidato
+     */
+    public String cargar_hidatoQ() {
+        ph = new PersistenciaHidato();
+        File hidato_fitxer = new File(path_hidatoQ);
+        return ph.cargar_H(hidato_fitxer);
+    }
+
+    /**
+     * recibe un String y lo envia a PersistenciaHidato para que guarde este en un fichero
+     * @param h objecto Hidato convertido a String
+     */
+    public void guardar_hidatoH(String h) {
+        ph = new PersistenciaHidato();
+        File hidato_fitxer = new File(path_hidatoH);
+        ph.guardar_H(h, hidato_fitxer);
+    }
+
+    /**
+     * devuelve a la capa de Domini en forma de String un objecto de la clase Hidato
+     * @return devuelve un String que corresponde a un objecto de la clase Hidato
+     */
+    public String cargar_hidatoH() {
+        ph = new PersistenciaHidato();
+        File hidato_fitxer = new File(path_hidatoH);
+        return ph.cargar_H(hidato_fitxer);
     }
 
     /**
      * guarda en la capa de persistencia una instancia de la clase Taulell
      * @param t String que corresponde a un objeto Taulell
-     * @param idt Identificador del objeto que se guardará en la capa de persistencia
      */
-    public void guardar_taulell(String t, Integer idt) {
+    public void guardar_taulell(String t) {
         pt = new PersistenciaTaulell();
-        File taulell_fitxer = new File(path_taulell + idt);
+        File taulell_fitxer = new File(path_taulell);
         pt.guardar_T(t, taulell_fitxer);
     }
 
     /**
      * devuelve a la capa de Domini en forma de String un objecto de la clase Taulell
-     * @param idt Integer que identifica al objeto que se quiere cargar
      * @return devuelve un String que corresponde a un objecto de la clase Taulell
      */
-    public String cargar_taulell(Integer idt) {
+    public String cargar_taulell() {
         pt = new PersistenciaTaulell();
-        File taulell_fitxer = new File(path_taulell + idt);
+        File taulell_fitxer = new File(path_taulell);
         return pt.cargar_T(taulell_fitxer);
-    }
-
-    /**
-     * elimina de la capa de persistencia el Hidato identificado por idt
-     * @param idt Identificador del Taulell a borrar
-     */
-    public void borrar_taulell(Integer idt) {
-        pt = new PersistenciaTaulell();
-        File file_taulell = new File(path_taulell + idt);
-        pt.borrar_taulell(file_taulell);
     }
 }
